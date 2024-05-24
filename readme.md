@@ -86,6 +86,12 @@ API文档：[API 文档](docs/doc.md)
 
 - [NanmiCoder/MediaCrawler](https://github.com/NanmiCoder/MediaCrawler)
 
+## 即将支持
+
+- [ ] Bilibili
+- [ ] 微博
+- [ ] 小红书
+
 ## star 趋势图
 
 - 如果该项目对你有帮助，star一下 ❤️❤️❤️
