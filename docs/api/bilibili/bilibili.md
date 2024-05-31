@@ -186,7 +186,7 @@ script/bilibili/download.py
 python3 script/bilibili/download.py --id=<video_id> --dir=<dir> --retain=<retain> --hostport=<hostport>
 
 # id : 视频id，从网页链接中获取，例如: BV18f421o7zr
-# dir : 下载目录
-# retain : 是否保留下载链接文件
-# hostport : crawler服务所在主机端口
+# dir : 下载目录, 默认为 .cache/bilibili/
+# retain : 是否保留下载链接文件, 0: 不保存, 1: 保存, 默认为0
+# hostport : crawler服务所在主机端口, 默认为 http://localhost:8080
 ```
