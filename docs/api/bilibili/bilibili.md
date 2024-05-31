@@ -1,16 +1,16 @@
 # API 文档
 
-## 抖音
+## 哔哩哔哩
 
 ### 添加账号
 
 - **功能说明**
 
-用于添加抖音账号，cookie最好复制视频详情页中`https://www.douyin.com/aweme/v1/web/aweme/detail/`接口请求时带的cookie，成功率较高。
+用于添加哔哩哔哩账号，cookie最好复制视频详情页中`https://api.bilibili.com/x/v2/reply/wbi/main`接口请求时带的cookie，成功率较高。
 
 - **URL**
 
-  `/douyin/add_account`
+  `/bilibili/add_account`
 
 - **Method**
 
@@ -21,7 +21,7 @@
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | true | string | 账户名(用于管理用户cookie) |
-| cookie | true | string | 抖音cookie |
+| cookie | true | string | 哔哩哔哩cookie |
 
 - **Response**
 
@@ -35,7 +35,7 @@
 
 - **URL**
 
-  `/douyin/account_list`
+  `/bilibili/account_list`
 
 - **Method**
 
@@ -58,16 +58,20 @@
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | true | string | 账户名(用于管理用户cookie) |
-| cookie | true | string | 抖音cookie |
+| cookie | true | string | 哔哩哔哩cookie |
 | ct | true | int | 创建时间戳 |
 | ut | true | int | 更新时间戳 |
 | expired | true | int | 0: 有效 1: 过期 (请求失败时自动设为过期) |
 
 ### 获取视频详情
 
+- **功能说明**
+
+接口只能获取到视频下载链接。由于哔哩哔哩音视频分离，且需要构造下载请求，如需下载视频，请使用[下载视频](#bilibili视频下载)脚本。
+
 - **URL**
 
-  `/douyin/detail`
+  `/bilibili/detail`
 
 - **Method**
 
@@ -77,7 +81,7 @@
 
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | true | string | 抖音视频id，从网页链接中获取，例如: 7375004964311010598 |
+| id | true | string | 哔哩哔哩视频id，从网页链接中获取，例如: BV18f421o7zr |
 
 - **Success Response**
 
@@ -91,7 +95,7 @@
 
 - **URL**
 
-  `/douyin/comments`
+  `/bilibili/comments`
 
 - **Method**
 
@@ -101,9 +105,9 @@
 
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | true | string | 抖音视频id |
+| id | true | string | 哔哩哔哩视频id |
 | offset | false | int | 评论翻页偏移量, 默认0 |
-| limit | false | int | 评论数量, 默认20 |
+| limit | false | int | 评论数量, 默认10 |
 
 - **Success Response**
 
@@ -117,7 +121,7 @@
 
 - **URL**
 
-  `/douyin/replys`
+  `/bilibili/replys`
 
 - **Method**
 
@@ -127,10 +131,10 @@
 
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
-| video_id | true | string | 抖音视频id，从网页链接中获取，例如: 7375004964311010598 |
-| comment_id | true | string | 视频评论id，从评论中获得到的cid，例如: 7375051558763561768 |
+| video_id | true | string | 哔哩哔哩视频id，从网页链接中获取，例如: BV18f421o7zr |
+| comment_id | true | string | 视频评论id，从评论中获得到的rpid，例如: 215241055632 |
 | offset | false | int | 评论翻页偏移量, 默认0 |
-| limit | false | int | 评论数量, 默认20 |
+| limit | false | int | 评论数量, 默认10 |
 
 - **Success Response**
 
@@ -144,7 +148,7 @@
 
 - **URL**
 
-  `/douyin/search`
+  `/bilibili/search`
 
 - **Method**
 
@@ -165,3 +169,24 @@
 | code | true | int | 0: 成功 1: 参数错误 2: 服务器错误 |
 | data | true | struct | 数据 |
 | msg | true | string | 请求说明(成功、参数错误、服务器错误) |
+
+### bilibili视频下载
+
+- **功能说明**
+
+脚本会自动获取视频下载链接，然后下载视频。
+
+- **脚本路径**
+
+script/bilibili/download.py
+
+- **参数**
+
+```bash
+python3 script/bilibili/download.py --id=<video_id> --dir=<dir> --retain=<retain> --hostport=<hostport>
+
+# id : 视频id，从网页链接中获取，例如: BV18f421o7zr
+# dir : 下载目录
+# retain : 是否保留下载链接文件
+# hostport : crawler服务所在主机端口
+```

@@ -6,4 +6,8 @@ def request_detail(id: str, cookie: str) -> tuple[dict, bool]:
     """
     params = {"aweme_id": id}
     headers = {"cookie": cookie}
-    return common_request('/aweme/v1/web/aweme/detail/', params, headers)
+    resp, succ =common_request('/aweme/v1/web/aweme/detail/', params, headers)
+    if not succ:
+        return resp, succ
+    ret = resp.get('aweme_detail', {})
+    return ret, succ

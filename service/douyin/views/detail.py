@@ -16,10 +16,13 @@ def detail():
     _accounts = accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
-        res, expired = request_detail(id, account.get('cookie', ''))
-        if expired:
+        if account.get('expired', 0) == 1:
+            continue
+        res, succ = request_detail(id, account.get('cookie', ''))
+        if not succ:
+            # 失败过期cookie
             accounts.expire(account.get('id', ''))
-        if res == {} or expired:
+        if res == {} or not succ:
             continue
         logger.info(f'get video detail success, id: {id}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)

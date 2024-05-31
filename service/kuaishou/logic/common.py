@@ -15,10 +15,10 @@ COMMON_HEADERS = {
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
     "accept": "*/*",
     "content-type": "application/json",
-    "sec-ch-ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    "sec-ch-ua": '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
     "sec-ch-ua-mobile": "?0",
     "sec-ch-ua-platform": '"macOS"'
 }
@@ -30,11 +30,13 @@ class GraphqlQuery(Enum):
     SEARCH = 'search'
     DETAIL = 'detail'
     COMMENTS = 'comments'
+    REPLYS = 'replys'
 
 GRAPHQL_FILES = {
     GraphqlQuery.SEARCH: 'search_query.graphql',
     GraphqlQuery.DETAIL: 'video_detail.graphql',
     GraphqlQuery.COMMENTS: 'comment_list.graphql',
+    GraphqlQuery.REPLYS: 'replys.graphql'
     }
 
 
@@ -48,6 +50,12 @@ def load_graphql_queries(type: GraphqlQuery) -> str:
     return graphql.get(type)
 
 def common_request(data: dict, headers: dict) -> tuple[dict, bool]:
+    """
+    请求 kuaishou
+    :param data: 请求参数
+    :param headers: 请求头
+    :return: 返回数据和是否成功
+    """
     url = f'{HOST}/graphql'
     headers.update(COMMON_HEADERS)
 
@@ -61,9 +69,5 @@ def common_request(data: dict, headers: dict) -> tuple[dict, bool]:
         logger.error(
             f'url: {url}, body: {data}, request error, code: {response.status_code}, body: {response.text}')
         return {}, False
-    if response.json().get('status_code', 0) != 0:
-        logger.error(
-            f'url: {url}, body: {data}, request error, code: {response.status_code}, body: {response.text}')
-        return response.json(), True
 
-    return response.json(), False
+    return response.json(), True

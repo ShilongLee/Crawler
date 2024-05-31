@@ -14,4 +14,8 @@ def request_detail(id: str, cookie: str) -> tuple[dict, bool]:
         "query": load_graphql_queries(GraphqlQuery.DETAIL)
     }
     headers = {"Cookie": cookie}
-    return common_request(data, headers)
+    resp, succ = common_request(data, headers)
+    if not succ:
+        return resp, succ
+    ret = resp.get('data', {})
+    return ret, succ

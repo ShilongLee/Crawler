@@ -11,17 +11,20 @@ def search():
     获取视频搜索
     """
     keyword = request.args.get('keyword', '')
-    pcursor = request.args.get('pcursor', '')
+    offset = int(request.args.get('offset', 0))
+    limit = int(request.args.get('limit', 20))
 
     _accounts = accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
-        res, expired = request_search(keyword, account.get('cookie', ''), pcursor)
-        if expired:
-            accounts.expire(account.get('id', ''))
-        if res == {} or expired:
+        if account.get('expired', 0) == 1:
             continue
-        logger.info(f'search success, keyword: {keyword}, pcursor: {pcursor}, res: {res}')
+        res, succ = request_search(keyword, account.get('cookie', ''), offset, limit)
+        if not succ:
+            accounts.expire(account.get('id', ''))
+        if res == {} or not succ:
+            continue
+        logger.info(f'search success, keyword: {keyword}, offset: {offset}, limit: {limit}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)
-    logger.warning(f'search failed, keyword: {keyword}, pcursor: {pcursor}')
+    logger.warning(f'search failed, keyword: {keyword}, offset: {offset}, limit: {limit}')
     return reply(ErrorCode.INTERNAL_ERROR, '内部错误请重试')

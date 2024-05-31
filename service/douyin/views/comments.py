@@ -11,16 +11,18 @@ def comments():
     获取视频评论
     """
     id = request.args.get('id', '')
-    offset = request.args.get('offset', 0)
-    limit = request.args.get('limit', 20)
+    offset = int(request.args.get('offset', 0))
+    limit = int(request.args.get('limit', 20))
 
     _accounts = accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
-        res, expired = request_comments(id, account.get('cookie', ''), offset, limit)
-        if expired:
+        if account.get('expired', 0) == 1:
+            continue
+        res, succ = request_comments(id, account.get('cookie', ''), offset, limit)
+        if not succ:
             accounts.expire(account.get('id', ''))
-        if res == {} or expired:
+        if res == {} or not succ:
             continue
         logger.info(f'get comments success, id: {id}, offset: {offset}, limit: {limit}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)

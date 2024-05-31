@@ -1,7 +1,7 @@
+from lib.logger import logger
 import execjs
 import requests
 import urllib.parse
-from lib.logger import logger
 
 HOST = 'https://www.douyin.com'
 
@@ -11,27 +11,27 @@ COMMON_PARAMS = {
     "channel": "channel_pc_web",
     "cookie_enabled": "true",
     "browser_language": "zh-CN",
-    "browser_platform": "Win32",
-    "browser_name": "Firefox",
-    "browser_version": "110.0",
+    "browser_platform": "MacIntel",
+    "browser_name": "Chrome",
+    "browser_version": "125.0.0.0",
     "browser_online": "true",
-    "engine_name": "Gecko",
-    "os_name": "Windows",
-    "os_version": "10",
-    "engine_version": "109.0",
+    "engine_name": "Blink",
+    "os_name": "Mac+OS",
+    "os_version": "10.15.7",
+    "engine_version": "125.0.0.0",
     "platform": "PC",
     "screen_width": "1920",
     "screen_height": "1200",
 }
 
 COMMON_HEADERS ={
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
     "sec-fetch-site": "same-origin",
     "sec-fetch-mode": "cors",
     "sec-fetch-dest": "empty",
     "sec-ch-ua-platform": "macOS",
     "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    "sec-ch-ua": '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
     "referer": "https://www.douyin.com/?recommend=1",
     "priority": "u=1, i",
     "pragma": "no-cache",
@@ -42,6 +42,13 @@ COMMON_HEADERS ={
 }
 
 def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
+    """
+    请求 douyin
+    :param uri: 请求路径
+    :param params: 请求参数
+    :param headers: 请求头
+    :return: 返回数据和是否成功
+    """
     url = f'{HOST}{uri}'
     params.update(COMMON_PARAMS)
     headers.update(COMMON_HEADERS)
@@ -64,6 +71,6 @@ def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
     if response.json().get('status_code', 0) != 0:
         logger.error(
             f'url: {url}, params: {params}, request error, code: {response.status_code}, body: {response.text}')
-        return response.json(), True
+        return response.json(), False
 
-    return response.json(), False
+    return response.json(), True
