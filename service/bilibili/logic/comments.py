@@ -23,8 +23,9 @@ def request_comments(id: str, cookie: str, offset: int, limit: int) -> tuple[dic
         if not succ:
             return resp, succ
         ret.extend(resp.get('data', {}).get('replies', []))
-        pagination = f'{{"offset":{json.dumps(resp.get('data', {}).get('cursor', {}).get('pagination_reply', {}).get('next_offset', ''))}}}'
+        next_offset = json.dumps(resp.get('data', {}).get('cursor', {}).get('pagination_reply', {}).get('next_offset', ''))
+        pagination = '{"offset":%s}' % next_offset
         is_end = resp.get('data', {}).get('cursor', {}).get('is_end', False)
     ret = ret[offset:end_length]
     return ret, succ
-    
+
