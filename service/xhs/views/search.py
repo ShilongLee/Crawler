@@ -3,15 +3,14 @@ from utils.error_code import ErrorCode
 from utils.reply import reply
 from ..models import accounts
 from lib.logger import logger
-from ..logic import request_replys
+from ..logic import request_search
 import random
 
-def replys():
+def search():
     """
-    获取视频评论回复
+    获取笔记搜索
     """
-    id = request.args.get('id', '')
-    comment_id = request.args.get('comment_id', '')
+    keyword = request.args.get('keyword', '')
     offset = int(request.args.get('offset', 0))
     limit = int(request.args.get('limit', 20))
     _accounts = accounts.load()
@@ -19,12 +18,12 @@ def replys():
     for account in _accounts:
         if account.get('expired', 0) == 1:
             continue
-        res, succ = request_replys(id, comment_id, account.get('cookie', ''), offset, limit)
+        res, succ = request_search(keyword, account.get('cookie', ''), offset, limit)
         if not succ:
             accounts.expire(account.get('id', ''))
         if res == {} or not succ:
             continue
-        logger.info(f'get replys success, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}, res: {res}')
+        logger.info(f'search success, keyword: {keyword}, offset: {offset}, limit: {limit}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)
-    logger.warning(f'get replys failed, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}')
+    logger.warning(f'search failed, keyword: {keyword}, offset: {offset}, limit: {limit}')
     return reply(ErrorCode.INTERNAL_ERROR, '内部错误请重试')

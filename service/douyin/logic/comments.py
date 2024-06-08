@@ -9,5 +9,6 @@ def request_comments(id: str, cookie: str, offset: int = 0, limit: int = 20) -> 
     resp, succ = common_request('/aweme/v1/web/comment/list/', params, headers)
     if not succ:
         return resp, succ
-    ret = resp.get('comments', {})
+    ret = {"total": resp.get('total', 0)}
+    ret["comments"] = resp.get('comments', [])
     return ret, succ

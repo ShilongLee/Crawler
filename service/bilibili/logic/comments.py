@@ -11,20 +11,24 @@ def request_comments(id: str, cookie: str, offset: int, limit: int) -> tuple[dic
         return data, succ
     oid = data.get('aid', 0)
     end_length = offset + limit
-    ret = []
+    comments = []
     pagination = '{"offset":""}'
     is_end = False
+    total = 0
     # tip: web_location 可能需要定期更换
-    while not is_end and len(ret) < end_length:
+    while not is_end and len(comments) < end_length:
         params = {'oid': oid, 'type': 1, 'mode': 3, 'pagination_str': pagination, 'plat': 1, 'web_location': 1315875}
-        if ret == []: # 第一次要加这个参数
+        if comments == []: # 第一次要加这个参数
             params['seek_rpid'] = ''
         resp, succ = common_request(API_HOST, '/x/v2/reply/wbi/main', params, headers, False, True)
         if not succ:
             return resp, succ
-        ret.extend(resp.get('data', {}).get('replies', []))
-        pagination = f'{{"offset":{json.dumps(resp.get('data', {}).get('cursor', {}).get('pagination_reply', {}).get('next_offset', ''))}}}'
+        comments.extend(resp.get('data', {}).get('replies', []))
+        next_offset = json.dumps(resp.get('data', {}).get('cursor', {}).get('pagination_reply', {}).get('next_offset', ''))
+        pagination = '{"offset":%s}' % next_offset
         is_end = resp.get('data', {}).get('cursor', {}).get('is_end', False)
-    ret = ret[offset:end_length]
+        total = resp.get('data', {}).get('cursor', {}).get('all_count', 0)
+
+    ret = {'total': total, 'comments': comments[offset:end_length]}
     return ret, succ
-    
+
