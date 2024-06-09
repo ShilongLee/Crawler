@@ -7,8 +7,9 @@ def request_comments(id: str, cookie: str, offset: int, limit: int) -> tuple[dic
     pcursor = ''
     headers = {"cookie": cookie}
     end_length = offset + limit
-    ret = []
-    while pcursor != 'no_more' and len(ret) < end_length:
+    comments = []
+    total = 0
+    while pcursor != 'no_more' and len(comments) < end_length:
         data = {
             "operationName": "commentListQuery",
             "variables": {
@@ -21,8 +22,9 @@ def request_comments(id: str, cookie: str, offset: int, limit: int) -> tuple[dic
         resp, succ = common_request(data, headers)
         if not succ:
             return resp, succ
-        ret.extend(resp.get('data', {}).get('visionCommentList', {}).get('rootComments', []))
+        comments.extend(resp.get('data', {}).get('visionCommentList', {}).get('rootComments', []))
         pcursor = resp.get('data', {}).get('visionCommentList', {}).get('pcursor', '')
+        total = resp.get('data', {}).get('total', 0)
 
-    ret = ret[offset:end_length]
+    ret = {"total": total, "comments": comments[offset:end_length]}
     return ret, succ

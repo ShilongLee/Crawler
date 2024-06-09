@@ -4,8 +4,8 @@ from lib.logger import logger
 import time
 
 class DyAccount(SqliteStore):
-    def __init__(self, store_path='douyin.db', pool_size=5):
-        super().__init__(store_path, pool_size)
+    def __init__(self, store_path='douyin.db'):
+        super().__init__(store_path)
         self.primary_key = 'id'
         self.table_name = 'account'
         self._create_table()

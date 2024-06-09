@@ -3,28 +3,27 @@ from utils.error_code import ErrorCode
 from utils.reply import reply
 from ..models import accounts
 from lib.logger import logger
-from ..logic import request_replys
+from ..logic import request_detail
 import random
 
-def replys():
+# route
+def detail():
     """
-    获取视频评论回复
+    获取笔记信息
     """
     id = request.args.get('id', '')
-    comment_id = request.args.get('comment_id', '')
-    offset = int(request.args.get('offset', 0))
-    limit = int(request.args.get('limit', 20))
+
     _accounts = accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
         if account.get('expired', 0) == 1:
             continue
-        res, succ = request_replys(id, comment_id, account.get('cookie', ''), offset, limit)
+        res, succ = request_detail(id, account.get('cookie', ''))
         if not succ:
             accounts.expire(account.get('id', ''))
         if res == {} or not succ:
             continue
-        logger.info(f'get replys success, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}, res: {res}')
+        logger.info(f'get note detail success, id: {id}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)
-    logger.warning(f'get replys failed, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}')
+    logger.warning(f'get note detail failed, don\'t have enough effective account. id: {id}')
     return reply(ErrorCode.INTERNAL_ERROR, '内部错误请重试')

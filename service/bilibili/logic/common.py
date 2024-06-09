@@ -81,6 +81,17 @@ def common_request(host: str, uri: str, params: dict, headers: dict, doc: bool =
 
     return response.json(), True
 
+def extract_outermost_json(text):
+    # 尝试从字符串的不同长度解析JSON，直到成功
+    for i in range(len(text), 0, -1):
+        try:
+            # 尝试解析前i个字符
+            json_obj = json.loads(text[:i])
+            return json_obj
+        except json.JSONDecodeError:
+            # 如果解析失败，继续尝试下一个长度
+            continue
+    raise ValueError("No valid JSON found")
 def detail_request(id: str,  headers: dict) -> tuple[dict, bool]:
     """
     请求视频详情
@@ -98,8 +109,8 @@ def detail_request(id: str,  headers: dict) -> tuple[dict, bool]:
         download_data = json.loads(target).get("data", {})
         # 视频信息
         pattern = re.compile('window\\.__INITIAL_STATE__=')
-        target = soup.head.find('script', text = pattern).text.replace('window.__INITIAL_STATE__=', '').split(';')[0]
-        detail_data = json.loads(target).get('videoData', {})
+        target = extract_outermost_json(soup.head.find('script', text = pattern).text.replace('window.__INITIAL_STATE__=', ''))
+        detail_data = target.get('videoData', {})
     except Exception as e:
         logger.error(f'parse hrml error, id: {id}, headers: {headers} doc: {document}, err: {e}')
         return {}, False

@@ -3,8 +3,8 @@ from contextlib import closing
 from lib.logger import logger
 import time
 
-class KsAccount(SqliteStore):
-    def __init__(self, store_path='kuaishou.db'):
+class XhsAccount(SqliteStore):
+    def __init__(self, store_path='xhs.db'):
         super().__init__(store_path)
         self.primary_key = 'id'
         self.table_name = 'account'
@@ -72,4 +72,4 @@ class KsAccount(SqliteStore):
                 conn.rollback()
                 return False
 
-accounts = KsAccount("data/kuaishou/kuaishou.db")
+accounts = XhsAccount("data/xhs/xhs.db")

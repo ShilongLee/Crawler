@@ -131,7 +131,7 @@
 
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
-| video_id | true | string | 哔哩哔哩视频id，从网页链接中获取，例如: BV18f421o7zr |
+| id | true | string | 哔哩哔哩视频id，从网页链接中获取，例如: BV18f421o7zr |
 | comment_id | true | string | 视频评论id，从评论中获得到的rpid，例如: 215241055632 |
 | offset | false | int | 评论翻页偏移量, 默认0 |
 | limit | false | int | 评论数量, 默认10 |
