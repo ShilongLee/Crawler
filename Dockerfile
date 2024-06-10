@@ -1,13 +1,14 @@
-FROM python:3
+FROM python:3-alpine
 
 WORKDIR /app
 
+COPY requirements.txt .
+
+RUN apk add --update nodejs npm \
+    && pip install --no-cache-dir -r requirements.txt \
+    && rm -rf /var/cache/apk/*
+
 COPY . .
-
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
-
-RUN pip3 install -r requirements.txt
 
 ENV THREADS=4
 
