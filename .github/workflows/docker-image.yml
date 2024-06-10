@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag crawler:latest
+      run: docker build . --file Dockerfile --tag shilongli0101/crawler:latest
 
     - name: Push the Docker image
       run: docker push shilongli0101/crawler:latest
