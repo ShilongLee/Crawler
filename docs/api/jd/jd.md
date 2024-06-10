@@ -78,7 +78,8 @@
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | keyword | true | string | 搜索词 |
-| page | false | int | 第几页, 默认1 |
+| offset | false | int | 搜索翻页偏移量, 默认0 |
+| limit | false | int | 结果数量, 默认30 |
 
 - **Success Response**
 

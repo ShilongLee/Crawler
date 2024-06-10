@@ -1,4 +1,3 @@
-import requests
 import time
 import hashlib
 from urllib.parse import quote

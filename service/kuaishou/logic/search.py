@@ -1,6 +1,6 @@
 from .common import common_request, load_graphql_queries, GraphqlQuery
 
-def request_search(keyword: str, cookie: str, offset: int, limit: int) -> tuple[dict, bool]:
+def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求快手获取搜索信息
     """

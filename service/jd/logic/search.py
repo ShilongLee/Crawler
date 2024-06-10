@@ -6,70 +6,60 @@ from lib.logger import logger
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 
-def request_search(keyword: str, cookie: str, page: int = 1) -> tuple[dict, bool]:
+def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 30) -> tuple[dict, bool]:
     """
     请求jd获取搜索信息
     """
-    ret = []
-    page = page * 2 - 1
+    results = []
+    page_size = 30
+    start_page = int((offset - 1) / page_size ) + 1
+    end_page = int((offset + limit - 1) / page_size) + 1
     keyword = quote(keyword)
-    query = f'?keyword={keyword}&page={page}'
-    url = f'{SEARCH_URL}{query}'
     headers = {'cookie': cookie}
     headers.update(COMMON_HEADERS)
-    try:
-        logger.info(f'url: {url}')
-        with requests.get(url, headers=headers) as res:
-            html = res.text
-            ret = parse_search_html(html)
-            ret_count = len(ret)
-            logger.info(f'ret_count: {ret_count}')
-    except Exception as e:
-        print(e)
-        return {}, False
-
+    total = 0
+    for page_it in range(start_page, end_page + 1):
+        page = page_it * 2 - 1
+        query = f'?keyword={keyword}&page={page}'
+        url = f'{SEARCH_URL}{query}'
+        try:
+            logger.info(f'request url: {url}')
+            with requests.get(url, headers=headers) as res:
+                logger.info(f'response url: {url}, body: {res.text}')
+                html = res.text
+                ret, total = parse_search_html(html)
+                results.extend(ret)
+        except Exception as e:
+            logger.error(f"failed to request {url}, error: {e}")
+            return {}, False
+    ret = {"results": results[(offset % page_size):(offset % page_size + limit)], "total": total}
     return ret, True
-
-findImgSrc = re.compile(r'<img.*data-lazy-img="(.*?)"', re.S)
-findPrice = re.compile(r'<i>(.*?)</i>', re.S)
-findInfo = re.compile(r'<div class="p-name p-name-type-2">(.*?)<em>(.*?)</em>', re.S)
-findTag = re.compile(r'<span(.*?)>(.*?)</span>', re.S)
-findStore = re.compile(r'<span class="J_im_icon"><a.*?>(.*?)</a>', re.S)
-findSupply = re.compile(r'<i class="goods-icons J-picon-tips J-picon-fix" data-idx="1" data-tips="京东自营，品质保障">(.*?)</i>', re.S)
-def parse_search_html(html):
+def parse_search_html(html) -> tuple[list, int]:
     soup = BeautifulSoup(html, "html.parser")
     datalist = []
+    src = soup.head.find_all("script")[-1].text.replace("\n", '').replace("\t", '').replace('\\\'','\'')
+    total = int(re.search(r"result_count:'(\d+)'", src).group(1))
     for item in soup.find_all("li", class_="gl-item"):
-        data = {}
-        item = str(item)
-        imgSrc = re.findall(findImgSrc, item)[0]
-        imgSrc = imgSrc[2:]  # 去掉前面多余的/
-        price = re.findall(findPrice, item)[0]
-        data["imgSrc"] = imgSrc
-        data["price"] = price
-        info = re.findall(findInfo, item)[0]
-        tmpTag = info[1]
-        tag = re.findall(findTag, tmpTag)
-        if len(tag) != 0:
-            data["tag"] = tag[0][1]
-            tmpTag = re.sub(tag[0][1], '', tmpTag)
-        else:
-            data["tag"] = ' '
-
-        tmpTag = re.sub('<(.*?)>', '', tmpTag)  # 去掉多余符号
-        tmpTag = re.sub('\n', '', tmpTag)
-        tmpTag = re.sub('\t', '', tmpTag)
-        data["title"] = tmpTag
-
-        # ratNum = re.findall(findRatNum,item)
-        store = re.findall(findStore, item)[0]
-        data["store"] = store
-
-        supply = re.findall(findSupply, item)
-        if len(supply) != 0:
-            data["supply"] = supply[0]
-        else:
-            data["supply"] = "第三方"
+        imgSrc = "https:" + item.find("div", class_="p-img").find("img")['data-lazy-img']
+        price = item.find("div", class_="p-price").find("i").text
+        info = {"title": item.find("div", class_="p-name p-name-type-2").find("em").text.replace(r"\t", '').replace(r'\n', ''), "link": "https:"+ item.find("div", class_="p-name p-name-type-2").find("a")["href"]}
+        tag_span = item.find("div", class_="p-name p-name-type-2").find("em").find("span")
+        tag = '' if not tag_span else tag_span.text
+        store = {"title": item.find("div", class_="p-shop").find("span").text, "link": "https:"+ item.find("div", class_="p-shop").find("span").find("a")["href"]}
+        supply = []
+        for child in item.find("div", class_="p-icons"):
+            text = child.text.replace('\t', '').replace('\n','')
+            if text == '':
+                continue
+            supply.append(text)
+        data = {
+            "imgSrc": imgSrc,
+            "price": price,
+            "info": info,
+            "tag": tag,
+            "store": store,
+            "supply": supply,
+        }
         datalist.append(data)
-    return datalist
+    return datalist, total
 
