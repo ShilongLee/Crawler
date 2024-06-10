@@ -22,16 +22,16 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag shilongli0101/crawler:latest
-
-    - name: Push the Docker image
-      run: docker push shilongli0101/crawler:latest
+      run: |
+        docker build . --file Dockerfile --tag shilongli0101/crawler:latest
+        docker push shilongli0101/crawler:latest
       
     - name: Log in to registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Tag the Docker image for GitHub Container Registry
-      run: docker tag shilongli0101/crawler:latest ghcr.io/${{ github.repository_owner }}/crawler:latest
-      
-    - name: Push the Docker image to GitHub Container Registry
-      run: docker push ghcr.io/${{ github.repository_owner }}/crawler:latest
+    - name: Tag and Push the Docker image to GitHub Container Registry
+      run: |
+        IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/crawler:latest
+        IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
+        docker tag shilongli0101/crawler:latest $IMAGE_NAME
+        docker push $IMAGE_NAME
