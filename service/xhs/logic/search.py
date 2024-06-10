@@ -2,7 +2,7 @@ from .common import common_request
 import execjs
 
 
-def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 10) -> tuple[dict, bool]:
+def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求小红书获取搜索信息
     """
