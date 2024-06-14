@@ -18,23 +18,33 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     
-    - name: Build the Docker image
+    - name: Build and Push Docker image with date tag
       run: |
-        docker build . --file Dockerfile --tag shilongli0101/crawler:latest
+        DATE_TAG=$(date +%Y%m%d)
+        docker build . --file Dockerfile --tag shilongli0101/crawler:latest --tag shilongli0101/crawler:$DATE_TAG
         docker push shilongli0101/crawler:latest
+        docker push shilongli0101/crawler:$DATE_TAG
       
-    - name: Log in to registry
+    - name: Log in to GitHub Container Registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Tag and Push the Docker image to GitHub Container Registry
+    - name: Tag and Push Docker image to GitHub Container Registry
       run: |
+        DATE_TAG=$(date +%Y%m%d)
         IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/crawler:latest
         IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
+        IMAGE_NAME_DATE=ghcr.io/${{ github.repository_owner }}/crawler:$DATE_TAG
+        IMAGE_NAME_DATE=$(echo $IMAGE_NAME_DATE | tr '[A-Z]' '[a-z]')
         docker tag shilongli0101/crawler:latest $IMAGE_NAME
+        docker tag shilongli0101/crawler:latest $IMAGE_NAME_DATE
         docker push $IMAGE_NAME
+        docker push $IMAGE_NAME_DATE
