@@ -82,12 +82,6 @@
 
 API文档：[API 文档](docs/doc.md)
 
-## 相关项目参考
-
-从以下这些项目中学习并开始了解爬虫，在此特别感谢这些项目的作者，感谢你们的开源和贡献。
-
-- [NanmiCoder/MediaCrawler](https://github.com/NanmiCoder/MediaCrawler)
-
 ## 即将支持
 
 - [x] Bilibili
