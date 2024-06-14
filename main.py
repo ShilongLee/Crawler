@@ -5,6 +5,7 @@ from service.bilibili.urls  import bilibili
 from service.xhs.urls import xhs
 from service.taobao.urls import taobao
 from service.jd.urls import jd
+from service.weibo.urls import weibo
 from lib.logger import logger
 import yaml
 
@@ -15,6 +16,7 @@ app.register_blueprint(bilibili, url_prefix="/bilibili")
 app.register_blueprint(xhs, url_prefix="/xhs")
 app.register_blueprint(taobao, url_prefix="/taobao")
 app.register_blueprint(jd, url_prefix="/jd")
+app.register_blueprint(weibo, url_prefix="/weibo")
 
 def init_service():
     config_file = "config/config.yaml"
