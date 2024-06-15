@@ -40,20 +40,15 @@
 3. 执行下列命令
 
     ```bash
-    # 进入项目根目录
     cd Crawler
     make run
-    # make run 参数
-    #
-    # 端口号，默认 8080
-    # port=8081
-    #
-    # 线程数 默认 4
-    # thread=4
     ```
 
+    可选，通过`port`、`thread`参数指定端口(默认8080)和线程数(默认4)。
+
 4. 查看日志
-    日志默认存放在`.log/`目录下，`access.log`和`error.log`为访问日志和错误日志，crawler.log为爬虫日志。
+
+   日志默认存放在`.log/`目录下，`access.log`和`error.log`为访问日志和错误日志，crawler.log为爬虫日志。
 
 ### 使用docker
 
@@ -61,11 +56,9 @@
 
     ```bash
     sudo docker run -d --name crawler -p 8080:8080 shilongli0101/crawler
-    # 环境变量
-    #
-    # 线程数默认值4
-    # -e THREADS=4
     ```
+
+    可选，通过`docker`环境变量`THREADS`指定线程数(默认4)。
 
 2. 查看日志
 
