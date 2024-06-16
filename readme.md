@@ -73,7 +73,7 @@
 
 ## 文档
 
-快速上手: [快速上手](./wiki)
+快速上手: [快速上手](https://github.com/ShilongLee/Crawler/wiki)
 
 API文档：[API 文档](docs/doc.md)
 
