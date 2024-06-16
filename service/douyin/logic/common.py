@@ -68,7 +68,7 @@ def get_webid(headers: dict):
     if response.status_code != 200 or response.text == '':
         logger.error(f'failed get webid, url: {url}, header: {headers}')
         return None
-    pattern = '\\\\"user_unique_id\\\\":\\\\"(\d+)\\\\"'
+    pattern = r'\\"user_unique_id\\":\\"(\d+)\\"'
     match = re.search(pattern, response.text)
     if match:
         return match.group(1)
