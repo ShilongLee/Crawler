@@ -27,5 +27,5 @@ soupsieve==2.5
 SQLAlchemy==2.0.30
 tqdm==4.66.4
 typing_extensions==4.12.0
-urllib3==2.2.1
+urllib3==2.2.2
 Werkzeug==3.0.3
