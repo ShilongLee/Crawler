@@ -131,7 +131,6 @@
 |:---:|:---:|:---:|:---:|
 | id | true | string | 小红书笔记id，从网页链接中获取，例如: 6653f0820000000005005f9b |
 | comment_id | true | string | 笔记评论id，从评论中获得到的id，例如: 6654b9ac000000001c015031 |
-| cursor | true | string | 笔记评论游标id，从评论中获得到的sub_comment_cursor，例如: 66551bdb000000001c0248d1 |
 | offset | false | int | 评论翻页偏移量, 默认0 |
 | limit | false | int | 评论数量, 默认20 |
 

@@ -1,5 +1,5 @@
 from .common import common_request
-def request_replys(id: str, comment_id: str, cursor: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求小红书获取评论回复信息
     """
@@ -7,6 +7,7 @@ def request_replys(id: str, comment_id: str, cursor: str, cookie: str, offset: i
     end_length = offset + limit
     comments = []
     has_more = True
+    cursor = ''
     while has_more and len(comments) < end_length:
         data = {
             "note_id": id,
