@@ -120,8 +120,7 @@ def detail_request(id: str,  headers: dict) -> tuple[dict, bool]:
             'script', text=pattern).text.replace('window.__INITIAL_STATE__=', ''))
         detail_data = target.get('videoData', {})
     except Exception as e:
-        logger.error(f'parse hrml error, id: {id}, headers: {
-                     headers} doc: {document}, err: {e}')
+        logger.error(f'parse hrml error, id: {id}, headers: {headers} doc: {document}, err: {e}')
         return {}, False
 
     data = {}
