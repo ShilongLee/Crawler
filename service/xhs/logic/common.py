@@ -3,7 +3,8 @@ import requests
 import execjs
 import json
 
-HOST = 'https://edith.xiaohongshu.com'
+API_HOST = 'https://edith.xiaohongshu.com'
+WEB_HOST = 'https://www.xiaohongshu.com/'
 
 COMMON_HEADERS = headers = {
     "accept": "application/json, text/plain, */*",
@@ -33,7 +34,7 @@ def common_request(uri: str, params: dict, headers: dict, need_sign: bool = True
     :param headers: 请求头
     :return: 返回数据和是否成功
     """
-    url = f'{HOST}{uri}'
+    url = f'{API_HOST}{uri}'
     headers.update(COMMON_HEADERS)
 
     if post:

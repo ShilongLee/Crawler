@@ -4,3 +4,4 @@ from .detail import detail
 from .comments import comments
 from .replys import replys
 from .search import search
+from .user import user

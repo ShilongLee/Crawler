@@ -31,12 +31,16 @@ class GraphqlQuery(Enum):
     DETAIL = 'detail'
     COMMENTS = 'comments'
     REPLYS = 'replys'
+    PROFILE = 'profile'
+    PROFILE_PHOTO = 'profile_photo'
 
 GRAPHQL_FILES = {
     GraphqlQuery.SEARCH: 'search_query.graphql',
     GraphqlQuery.DETAIL: 'video_detail.graphql',
     GraphqlQuery.COMMENTS: 'comment_list.graphql',
-    GraphqlQuery.REPLYS: 'replys.graphql'
+    GraphqlQuery.REPLYS: 'replys.graphql',
+    GraphqlQuery.PROFILE: 'profile.graphql',
+    GraphqlQuery.PROFILE_PHOTO: 'profile_photo.graphql'
     }
 
 

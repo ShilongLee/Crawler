@@ -5,3 +5,4 @@ from .comments import comments
 from. replys import replys
 from .search import search
 from .preview import preview
+from .user import user
