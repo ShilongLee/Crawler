@@ -13,7 +13,7 @@ def user():
     """
     id = request.args.get('id', '')
     offset = int(request.args.get('offset', 0))
-    limit = int(request.args.get('limit', 20))
+    limit = int(request.args.get('limit', 10))
 
     _accounts = accounts.load()
     random.shuffle(_accounts)

@@ -1,6 +1,6 @@
 from .common import common_request
 
-def request_user(id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+def request_user(id: str, cookie: str, offset: int = 0, limit: int = 10) -> tuple[dict, bool]:
     """
     请求抖音获取用户信息
     """

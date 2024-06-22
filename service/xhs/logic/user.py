@@ -9,7 +9,8 @@ def request_user(id: str, cookie: str, offset: int = 0, limit: int = 20) -> tupl
     请求小红书获取用户信息
     """
     # 从doc中获取用户信息
-    response = requests.get(f'{WEB_HOST}/user/profile/{id}')
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
+    response = requests.get(f'{WEB_HOST}/user/profile/{id}', headers=headers)
     if response.status_code != 200 or response.text == '':
         return {}, False
     soup = BeautifulSoup(response.text, 'html.parser')

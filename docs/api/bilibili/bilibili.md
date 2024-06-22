@@ -192,3 +192,29 @@ python3 script/bilibili/download.py --id=<video_id> --dir=<dir> --retain=<retain
 # retain : 是否保留下载链接文件, 0: 不保存, 1: 保存, 默认为0
 # hostport : crawler服务所在主机端口, 默认为 http://localhost:8080
 ```
+
+### 用户信息及作品获取
+
+- **URL**
+
+  `/bilibili/user`
+
+- **Method**
+
+  `GET`
+
+- **URL Params**
+
+| 参数 | 必选 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | true | string | 用户id，用户详情页url中获取，例如: 6574487 |
+| offset | false | int | 作品翻页偏移量, 默认0 |
+| limit | false | int | 作品返回数量, 默认30 |
+
+- **Success Response**
+
+| 参数 | 必选 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| code | true | int | 0: 成功 1: 参数错误 2: 服务器错误 |
+| data | true | struct | 数据 |
+| msg | true | string | 请求说明(成功、参数错误、服务器错误) |
