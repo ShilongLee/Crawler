@@ -1,16 +1,21 @@
-.PHONY: venv
+.PHONY: venv, install, clean, help
+
 venv:
 	python3 -m venv .venv
 
-.PHONY: install
 install:
 	. .venv/bin/activate; pip3 install -r requirements.txt
-
-.PHONY: clean
+	
 clean:
 	rm -rf .venv
 
-port ?= 8080
-thread ?= 4
+port ?= 10002
 run: venv install
-	. .venv/bin/activate; .venv/bin/gunicorn -c config/gunicorn.conf.py -w $(thread) -b :$(port) main:app
+	. .venv/bin/activate; .venv/bin/uvicorn --host 0.0.0.0 --port $(port) main:app
+
+help:
+	@echo "Available targets:"
+	@echo "  venv    Create a virtual environment"
+	@echo "  install Install dependencies"
+	@echo "  clean   Remove the virtual environment"
+	@echo "  run     Run the application"

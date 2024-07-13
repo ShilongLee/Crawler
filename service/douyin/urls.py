@@ -1,12 +1,13 @@
-from flask import Blueprint
 from . import views
+from fastapi import APIRouter
 
-douyin = Blueprint('douyin', __name__)
+router = APIRouter(prefix='/douyin')
 
-douyin.add_url_rule('/add_account', 'add_account', views.add_account, methods=['POST'])
-douyin.add_url_rule('/account_list', 'account_list', views.account_list, methods=['GET'])
-douyin.add_url_rule('/detail', 'detail', views.detail, methods=['GET'])
-douyin.add_url_rule('/comments', 'comments', views.comments, methods=['GET'])
-douyin.add_url_rule('/replys', 'replys', views.replys, methods=['GET'])
-douyin.add_url_rule('/search', 'search', views.search, methods=['GET'])
-douyin.add_url_rule('/user', 'user', views.user, methods=['GET'])
+router.add_api_route('/add_account', views.add_account, methods=['POST'])
+router.add_api_route('/expire_account', views.expire_account, methods=['POST'])
+router.add_api_route('/account_list', views.account_list, methods=['GET'])
+router.add_api_route('/detail', views.detail, methods=['GET'])
+router.add_api_route('/comments', views.comments, methods=['GET'])
+router.add_api_route('/replys', views.replys, methods=['GET'])
+router.add_api_route('/search', views.search, methods=['GET'])
+router.add_api_route('/user', views.user, methods=['GET'])

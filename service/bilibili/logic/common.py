@@ -1,6 +1,6 @@
 from lib.logger import logger
 from bs4 import BeautifulSoup
-import requests
+from lib import requests
 import urllib.parse
 import time
 import hashlib
@@ -34,7 +34,7 @@ COMMON_HEADERS = {
 }
 
 
-def common_request(host: str, uri: str, params: dict, headers: dict, doc: bool = False, need_sign: bool = False) -> tuple[dict, bool]:
+async def common_request(host: str, uri: str, params: dict, headers: dict, doc: bool = False, need_sign: bool = False) -> tuple[dict, bool]:
     """
     请求 bilibili
     :param uri: 请求路径
@@ -55,17 +55,13 @@ def common_request(host: str, uri: str, params: dict, headers: dict, doc: bool =
         headers['cookie'] = cookie
 
     if need_sign:
-        params = sign(params)
+        params = await sign(params)
     if doc:
         headers['accept'] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
 
     logger.info(
         f'url: {url}, request {url}, params={params}, headers={headers}')
-    response = requests.get(url, params=params, headers=headers)
-    # 设置服务器cookie
-    set_cookies = "; ".join(
-        f"{k}={v}" for k, v in response.cookies.get_dict().items())
-    COMMON_HEADERS["cookie"] = set_cookies
+    response = await requests.get(url, params=params, headers=headers)
     logger.info(
         f'url: {url}, params: {params}, response, code: {response.status_code}, body: {response.text}')
 
@@ -98,13 +94,13 @@ def extract_outermost_json(text):
     raise ValueError("No valid JSON found")
 
 
-def detail_request(id: str,  headers: dict) -> tuple[dict, bool]:
+async def detail_request(id: str,  headers: dict) -> tuple[dict, bool]:
     """
     请求视频详情
     :param headers: 请求头
     :return: 返回数据和是否成功
     """
-    document, succ = common_request(HOST, f'/video/{id}/', {}, headers, True)
+    document, succ = await common_request(HOST, f'/video/{id}/', {}, headers, True)
     if not succ:
         return {}, succ
     try:
@@ -138,7 +134,7 @@ def getMixinKey(key: str) -> str:
     return salt[:32]
 
 
-def get_img_url_sub_url() -> str:
+async def get_img_url_sub_url() -> str:
     """
     获取图片加密盐值
     """
@@ -156,7 +152,7 @@ def get_img_url_sub_url() -> str:
 
     if get_salt_counter % 100000 == 0:
         url = 'https://api.bilibili.com/x/web-interface/nav'
-        response = requests.get(url)
+        response = await requests.get(url)
         if response.status_code != 200 or response.text == '':
             logger.error(
                 f'url: {url}, request error, code: {response.status_code}, body: {response.text}')
@@ -170,14 +166,14 @@ def get_img_url_sub_url() -> str:
     return getMixinKey(image_key + sub_key)
 
 
-def sign(params: dict):
+async def sign(params: dict):
     timestamp = int(time.time())
     params.update({"wts": timestamp})
     params = dict(sorted(params.items()))
     params = {k: ''.join(filter(lambda ch: ch not in "!'()*", str(v)))
               for k, v in params.items()}
     query = urllib.parse.urlencode(params)
-    salt = get_img_url_sub_url()
+    salt = await get_img_url_sub_url()
     wbi_sign = hashlib.md5((query + salt).encode()).hexdigest()  # 计算 w_rid
     params['w_rid'] = wbi_sign
     return params

@@ -1,8 +1,9 @@
-from flask import Blueprint
+from fastapi import APIRouter
 from . import views
 
-jd = Blueprint('jd', __name__)
+router = APIRouter(prefix='/jd')
 
-jd.add_url_rule('/add_account', 'add_account', views.add_account, methods=['POST'])
-jd.add_url_rule('/account_list', 'account_list', views.account_list, methods=['GET'])
-jd.add_url_rule('/search', 'search', views.search, methods=['GET'])
+router.add_api_route('/add_account', views.add_account, methods=['POST'])
+router.add_api_route('/expire_account', views.expire_account, methods=['POST'])
+router.add_api_route('/account_list', views.account_list, methods=['GET'])
+router.add_api_route('/search', views.search, methods=['GET'])

@@ -1,4 +1,3 @@
-from flask import request
 from utils.error_code import ErrorCode
 from utils.reply import reply
 from ..models import accounts
@@ -6,25 +5,21 @@ from lib.logger import logger
 from ..logic import request_comments
 import random
 
-def comments():
+async def comments(id: str, offset: int = 0, limit: int = 20):
     """
     获取笔记评论
     """
-    id = request.args.get('id', '')
-    offset = int(request.args.get('offset', 0))
-    limit = int(request.args.get('limit', 20))
-
-    _accounts = accounts.load()
+    _accounts = await accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
         if account.get('expired', 0) == 1:
             continue
-        res, succ = request_comments(id, account.get('cookie', ''), offset, limit)
-        if not succ:
-            accounts.expire(account.get('id', ''))
+        account_id = account.get('id', '')
+        res, succ = await request_comments(id, account.get('cookie', ''), offset, limit)
         if res == {} or not succ:
+            logger.error(f'get comments failed, account: {account_id} id: {id}, offset: {offset}, limit: {limit}')
             continue
-        logger.info(f'get comments success, id: {id}, offset: {offset}, limit: {limit},  res: {res}')
+        logger.info(f'get comments success, account: {account_id}, id: {id}, offset: {offset}, limit: {limit},  res: {res}')
         return reply(ErrorCode.OK, '成功' , res)
-    logger.warning(f'get comments failed, don\'t have enough effective account. id: {id}, offse: {offset}, limit: {limit}')
-    return reply(ErrorCode.INTERNAL_ERROR, '内部错误请重试')
+    logger.warning(f'get comments failed. id: {id}, offse: {offset}, limit: {limit}')
+    return reply(ErrorCode.NO_ACCOUNT, '请先添加账号')

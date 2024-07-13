@@ -29,10 +29,16 @@ class SingletonLogger:
         初始化日志配置
         :param config: 日志配置
         """
+        type = config['logger']['type']
+        level = config['logger']['level'].upper()
+
+        if type == 'console':
+            self.logger.setLevel(getattr(logging, level))
+            return
+        
         log_file = config['logger']['path']
         backup_count = config['logger']['backupcount']
         log_format = config['logger']['format']
-        level = config['logger']['level'].upper()
         
         self.logger.setLevel(getattr(logging, level))  # 使用配置的日志级别
         

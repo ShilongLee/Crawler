@@ -1,6 +1,6 @@
 from .common import common_request
 
-def request_comments(id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+async def request_comments(id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求微博获取评论信息
     """
@@ -21,9 +21,9 @@ def request_comments(id: str, cookie: str, offset: int = 0, limit: int = 20) -> 
             "locale": "zh-CN",
             "max_id": max_id
         }
-        resp, succ = common_request('/ajax/statuses/buildComments', params, headers)
+        resp, succ = await common_request('/ajax/statuses/buildComments', params, headers)
         if not succ:
-            return resp, succ
+            return {}, succ
         comments.extend(resp.get('data', []))
         max_id = int(resp.get('max_id', 0))
         total = resp.get('total_number', 0)

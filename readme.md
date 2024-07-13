@@ -31,6 +31,7 @@
 - 快手、抖音、哔哩哔哩、小红书、淘宝、京东、微博平台的爬虫接口
 - 获取公开的用户信息，帖子信息等
 - 使用简单，支持多种语言使用HTTP调用
+- 小红书[无水印视频](docs/api/xhs/xhs.md#获取笔记详情)
 - 哔哩哔哩视频[一键下载](docs/api/bilibili/bilibili.md#bilibili视频下载)
 - 微博媒体资源[预览接口](docs/api/weibo/weibo.md#微博媒体预览)
 
@@ -54,11 +55,11 @@
     make run
     ```
 
-    可选，通过`port`、`thread`参数指定端口(默认8080)和线程数(默认4)。
+    可选，通过`port`参数指定端口(默认8080)。
 
 4. 查看日志
 
-   日志默认存放在`.log/`目录下，`access.log`和`error.log`为访问日志和错误日志，crawler.log为爬虫日志。
+   日志默认存放在`.log/`目录下，crawler.log为爬虫日志。
 
 ### 使用docker
 
@@ -68,13 +69,10 @@
     sudo docker run -d --name crawler -p 8080:8080 shilongli0101/crawler
     ```
 
-    可选，通过`docker`环境变量`THREADS`指定线程数(默认4)。
-
 2. 查看日志
 
     ```bash
-    sudo docker exec -it crawler /bin/bash
-    cat .log/crawler.log # access.log error.log
+    sudo docker logs crawler
     ```
 
 首次使用需添加账号，例如：调用`http://localhost:8080/{platfrom}/add_account`添加账号，platfrom取`douyin`、`kuaishou`、`bilibili`、`xhs`、`taobao`、`jd`、`weibo`，接口详情请参考[API 文档](docs/doc.md)。
@@ -93,9 +91,9 @@ API文档：[API 文档](docs/doc.md)
 - [x] 小红书
 - [x] 微博
 - [x] 抖音全面更新a_bogus
+- [x] 更新异步框架，多请求并行提高响应速度
 - [ ] 淘宝详情、评论、用户信息功能
 - [ ] 京东详情、评论、用户信息功能
-- [ ] 更新异步框架，多请求并行提高响应速度
 
 ## star 趋势图
 

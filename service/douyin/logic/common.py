@@ -1,8 +1,10 @@
 from lib.logger import logger
 import execjs
-import requests
+from lib import requests
 import urllib.parse
 import re
+import random
+import json
 
 HOST = 'https://www.douyin.com'
 
@@ -58,11 +60,12 @@ COMMON_HEADERS ={
 
 DOUYIN_SIGN = execjs.compile(open('lib/js/douyin.js').read())
 
-def get_webid(headers: dict):
+async def get_webid(headers: dict):
     url = 'https://www.douyin.com/?recommend=1'
     logger.info(
         f'url: {url}, request {url}, headers={headers}')
-    response = requests.get(url, headers=headers)
+    headers['sec-fetch-dest'] = 'document'
+    response = await requests.get(url, headers=headers)
     logger.info(
         f'url: {url}, response, code: {response.status_code}')
     if response.status_code != 200 or response.text == '':
@@ -84,23 +87,33 @@ def cookies_to_dict(cookie_string) -> dict:
         cookie_dict[key] = value
     return cookie_dict
 
-def deal_params(params: dict, headers: dict) -> dict:
+async def deal_params(params: dict, headers: dict) -> dict:
     cookie = headers.get('cookie') or headers.get('Cookie')
     if not cookie:
         return params
     cookie_dict = cookies_to_dict(cookie)
-    params['msToken'] = cookie_dict.get('msToken', None)
+    params['msToken'] = get_ms_token()
     params['screen_width'] = cookie_dict.get('dy_swidth', 2560)
     params['screen_height'] = cookie_dict.get('dy_sheight', 1440)
     params['cpu_core_num'] = cookie_dict.get('device_web_cpu_core', 24)
     params['device_memory'] = cookie_dict.get('device_web_memory_size', 8)
     params['verifyFp'] = cookie_dict.get('s_v_web_id', None)
     params['fp'] = cookie_dict.get('s_v_web_id', None)
-    params['webid'] = get_webid(headers)
+    params['webid'] = await get_webid(headers)
     return params
 
+def get_ms_token(randomlength=120):
+    """
+    根据传入长度产生随机字符串
+    """
+    random_str = ''
+    base_str = 'ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789='
+    length = len(base_str) - 1
+    for _ in range(randomlength):
+        random_str += base_str[random.randint(0, length)]
+    return random_str
 
-def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
+async def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
     """
     请求 douyin
     :param uri: 请求路径
@@ -112,7 +125,7 @@ def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
     params.update(COMMON_PARAMS)
     headers.update(COMMON_HEADERS)
 
-    params = deal_params(params, headers)
+    params = await deal_params(params, headers)
     query = '&'.join([f'{k}={urllib.parse.quote(str(v))}' for k, v in params.items()])
     call_name = 'sign_datail'
     if 'reply' in uri:
@@ -122,7 +135,7 @@ def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
 
     logger.info(
         f'url: {url}, request {url}, params={params}, headers={headers}')
-    response = requests.get(url, params=params, headers=headers)
+    response = await requests.get(url, params=params, headers=headers)
     logger.info(
         f'url: {url}, params: {params}, response, code: {response.status_code}, body: {response.text}')
 

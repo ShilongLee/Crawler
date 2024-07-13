@@ -1,6 +1,6 @@
 from enum import Enum
 from lib.logger import logger
-import requests
+from lib import requests
 
 HOST = 'https://www.kuaishou.com'
 
@@ -53,7 +53,7 @@ for type, file in GRAPHQL_FILES.items():
 def load_graphql_queries(type: GraphqlQuery) -> str:
     return graphql.get(type)
 
-def common_request(data: dict, headers: dict) -> tuple[dict, bool]:
+async def common_request(data: dict, headers: dict) -> tuple[dict, bool]:
     """
     请求 kuaishou
     :param data: 请求参数
@@ -65,7 +65,7 @@ def common_request(data: dict, headers: dict) -> tuple[dict, bool]:
 
     logger.info(
         f'url: {url}, request {url}, body={data}, headers={headers}')
-    response = requests.post(url, json=data, headers=headers)
+    response = await requests.post(url, headers, data)
     logger.info(
         f'url: {url}, body: {data}, response, code: {response.status_code}, body: {response.text}')
 

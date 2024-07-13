@@ -1,6 +1,6 @@
 from .common import common_request, load_graphql_queries, GraphqlQuery
 
-def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求快手获取搜索信息
     """
@@ -25,7 +25,7 @@ def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) 
         }
         if search_session_id and search_session_id != '':
             data['variables']['searchSessionId'] = search_session_id
-        resp, succ = common_request(data, headers)
+        resp, succ = await common_request(data, headers)
         if not succ:
             return {}, succ
         data = resp.get('data', {}).get('visionSearchPhoto', {}).get('feeds', [])

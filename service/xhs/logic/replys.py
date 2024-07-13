@@ -1,5 +1,5 @@
 from .common import common_request
-def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+async def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求小红书获取评论回复信息
     """
@@ -17,9 +17,9 @@ def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit
             "image_formats": ["jpg", "webp", "avif"],
             "top_comment_id": ''
         }
-        resp, succ = common_request('/api/sns/web/v2/comment/sub/page', data, headers, True, False)
+        resp, succ = await common_request('/api/sns/web/v2/comment/sub/page', data, headers, True, False)
         if not succ:
-            return resp, succ
+            return {}, succ
         has_more = resp.get('data', {}).get('has_more', False)
         comments.extend(resp.get('data', {}).get('comments', []))
         cursor = resp.get('data', {}).get('cursor', '')

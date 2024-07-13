@@ -1,5 +1,5 @@
 from .common import common_request
-def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+async def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求微博获取评论回复信息
     """
@@ -13,9 +13,9 @@ def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit
             "fetch_level": 0,
             "locale": "zh-CN",
         }
-    resp, succ = common_request('/ajax/statuses/buildComments', params, {"cookie": cookie})
+    resp, succ = await common_request('/ajax/statuses/buildComments', params, {"cookie": cookie})
     if not succ:
-        return resp, succ
+        return {}, succ
     # 获取子评论
     headers = {"cookie": cookie}
     end_length = offset + limit
@@ -34,9 +34,9 @@ def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit
             "locale": "zh-CN",
             "max_id": max_id
         }
-        resp, succ = common_request('/ajax/statuses/buildComments', params, headers)
+        resp, succ = await common_request('/ajax/statuses/buildComments', params, headers)
         if not succ:
-            return resp, succ
+            return {}, succ
         comments.extend(resp.get('data', []))
         max_id = int(resp.get('max_id', 0))
         total = resp.get('total_number', 0)

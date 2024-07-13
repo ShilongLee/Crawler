@@ -1,12 +1,12 @@
-from .common import SEARCH_URL, COMMON_HEADERS
-import requests
-import json
 import re
+from .common import SEARCH_URL, COMMON_HEADERS
+from lib import requests
 from lib.logger import logger
 from urllib.parse import quote
 from bs4 import BeautifulSoup
+from asyncio import gather
 
-def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 30) -> tuple[dict, bool]:
+async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 30) -> dict:
     """
     请求jd获取搜索信息
     """
@@ -15,25 +15,34 @@ def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 30) 
     start_page = int((offset - 1) / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
     keyword = quote(keyword)
-    headers = {'cookie': cookie}
-    headers.update(COMMON_HEADERS)
     total = 0
+    tasks = []
     for page_it in range(start_page, end_page + 1):
         page = page_it * 2 - 1
-        query = f'?keyword={keyword}&page={page}'
-        url = f'{SEARCH_URL}{query}'
-        try:
-            logger.info(f'request url: {url}')
-            with requests.get(url, headers=headers) as res:
-                logger.info(f'response url: {url}, body: {res.text}')
-                html = res.text
-                ret, total = parse_search_html(html)
-                results.extend(ret)
-        except Exception as e:
-            logger.error(f"failed to request {url}, error: {e}")
-            return {}, False
+        tasks.append(search(keyword, page, cookie))
+    task_results = await gather(*tasks)
+    for data, _total in task_results:
+        if _total != 0:
+            total = _total
+        results.extend(data)
     ret = {"results": results[(offset % page_size):(offset % page_size + limit)], "total": total}
     return ret, True
+
+async def search(keyword: str, page: int, cookie: str) -> tuple[list, int]:
+    query = f'?keyword={keyword}&page={page}'
+    url = f'{SEARCH_URL}{query}'
+    headers = {'cookie': cookie}
+    headers.update(COMMON_HEADERS)
+    try:
+        logger.info(f'request url: {url}')
+        resp = await requests.get(url, headers=headers)
+        logger.info(f'response url: {url}, body: {resp.text}')
+        ret, total = parse_search_html(resp.text)
+        return ret, total
+    except Exception as e:
+        logger.error(f"failed to request {url}, error: {e}")
+        return [], 0
+
 def parse_search_html(html) -> tuple[list, int]:
     soup = BeautifulSoup(html, "html.parser")
     datalist = []

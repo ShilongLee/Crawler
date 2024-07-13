@@ -10,8 +10,8 @@ RUN apk add --update nodejs npm \
 
 COPY . .
 
-ENV THREADS=4
+ENV FILE = config/docker-config.yaml
 
 EXPOSE 8080
 
-CMD gunicorn -c config/gunicorn.conf.py -w $THREADS -b :8080 main:app
+CMD uvicorn --host 0.0.0.0 --port $(port) main:app

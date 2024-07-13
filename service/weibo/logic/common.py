@@ -1,5 +1,5 @@
 from lib.logger import logger
-import requests
+from lib import requests
 
 HOST = 'https://weibo.com'
 MOBILE_HOST = 'https://m.weibo.cn'
@@ -41,7 +41,7 @@ MOBILE_COMMON_HEADERS ={
     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
 }
 
-def mobile_common_request(uri: str, params: dict, headers: dict, doc: bool = False) -> tuple[dict, bool]:
+async def mobile_common_request(uri: str, params: dict, headers: dict, doc: bool = False) -> tuple[dict, bool]:
     """
     请求 douyin
     :param uri: 请求路径
@@ -56,7 +56,7 @@ def mobile_common_request(uri: str, params: dict, headers: dict, doc: bool = Fal
     
     logger.info(
         f'url: {url}, request {url}, params={params}, headers={headers}')
-    response = requests.get(url, params=params, headers=headers)
+    response = await requests.get(url, params=params, headers=headers)
     logger.info(
         f'url: {url}, params: {params}, response, code: {response.status_code}, body: {response.text}')
 
@@ -75,7 +75,7 @@ def mobile_common_request(uri: str, params: dict, headers: dict, doc: bool = Fal
 
     return response.json(), True
 
-def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
+async def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
     """
     请求 douyin
     :param uri: 请求路径
@@ -89,7 +89,7 @@ def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, bool]:
     
     logger.info(
         f'url: {url}, request {url}, params={params}, headers={headers}')
-    response = requests.get(url, params=params, headers=headers)
+    response = await requests.get(url, params=params, headers=headers)
     logger.info(
         f'url: {url}, params: {params}, response, code: {response.status_code}, body: {response.text}')
 

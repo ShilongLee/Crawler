@@ -1,4 +1,5 @@
 logger:
+  type : file
   level: INFO
   backupcount: 144
   format: "[%(asctime)s][%(name)s][%(levelname)s]: %(message)s"

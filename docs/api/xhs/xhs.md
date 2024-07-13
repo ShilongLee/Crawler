@@ -67,6 +67,10 @@
 
 ### 获取笔记详情
 
+- **功能说明**
+
+无水印视频，用`http://sns-video-bd.xhscdn.com/`拼接上响应中的`origin_video_key`即可。
+
 - **URL**
 
   `/xhs/detail`

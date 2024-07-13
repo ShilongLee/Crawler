@@ -1,33 +1,36 @@
 from .common import common_request
 import execjs
+import asyncio
 
-
-def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int = 20) -> dict:
     """
     请求小红书获取搜索信息
     """
     page_size = 20
     start_page = int((offset - 1) / page_size) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
-    headers = {"cookie": cookie}
-    results = []
     xhs_sign_obj = execjs.compile(open('lib/js/xhs.js').read())
-    for page in range(start_page, end_page + 1):
-        params = {
-            "ext_flags": [],
-            "image_formats": ["jpg", "webp", "avif"],
-            "keyword": keyword,
-            "note_type": 0,
-            "sort": "general",
-            "page": page,
-            "page_size": page_size,
-            'search_id': xhs_sign_obj.call('searchId')
-        }
-        resp, succ = common_request('/api/sns/web/v1/search/notes', params, headers, True, True)
-        if not succ:
-            return {}, succ
-        results.extend(resp.get('data', {}).get('items', []))
-        if not resp.get('data', {}).get('has_more', False):
-            break
+    tasks = [request_page(page, keyword, cookie, page_size, xhs_sign_obj) for page in range(start_page, end_page + 1)]
+    pages = await asyncio.gather(*tasks)
+    results = []
+    for result in pages:
+        results.extend(result)
     results = results[(offset % page_size):(offset % page_size + limit)]
-    return results, True
+    return results
+
+async def request_page(page: int, keyword: str, cookie: str, page_size: int, xhs_sign_obj) -> list:
+    headers = {"cookie": cookie}
+    params = {
+        "ext_flags": [],
+        "image_formats": ["jpg", "webp", "avif"],
+        "keyword": keyword,
+        "note_type": 0,
+        "sort": "general",
+        "page": page,
+        "page_size": page_size,
+        'search_id': xhs_sign_obj.call('searchId')
+    }
+    resp, succ = await common_request('/api/sns/web/v1/search/notes', params, headers, True, True)
+    if not succ:
+        return []
+    return resp.get('data', {}).get('items', [])

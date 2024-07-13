@@ -1,18 +1,21 @@
-from flask import request
 from utils.error_code import ErrorCode
 from utils.reply import reply
 from ..models import accounts
 from lib.logger import logger
-def add_account():
+from pydantic import BaseModel
+
+class Param(BaseModel):
+    id: str
+    cookie: str
+
+async def add_account(param: Param):
     '''
     添加jd账号
     '''
-    id = request.json.get('id', '')
-    cookie = request.json.get('cookie', '')
-    if id == '' or cookie == '':
-        logger.error(f'id or cookie is empty, id: {id}, cookie: {cookie}')
+    if param.id == '' or param.cookie == '':
+        logger.error(f'id or cookie is empty, id: {param.id}, cookie: {param.cookie}')
         return reply(ErrorCode.PARAMETER_ERROR, "id and cookie is required")
 
-    accounts.save(id, cookie, 0)
-    logger.info(f'jd add account, id: {id}, cookie: {cookie}')
+    await accounts.save(param.id, param.cookie, 0)
+    logger.info(f'jd add account, id: {param.id}, cookie: {param.cookie}')
     return reply()

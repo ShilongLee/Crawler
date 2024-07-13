@@ -1,10 +1,10 @@
 from lib.logger import logger
-import requests
+from lib import requests
 import execjs
 import json
 
 API_HOST = 'https://edith.xiaohongshu.com'
-WEB_HOST = 'https://www.xiaohongshu.com/'
+WEB_HOST = 'https://www.xiaohongshu.com'
 
 COMMON_HEADERS = headers = {
     "accept": "application/json, text/plain, */*",
@@ -26,7 +26,7 @@ COMMON_HEADERS = headers = {
 }
 
 
-def common_request(uri: str, params: dict, headers: dict, need_sign: bool = True, post: bool = True) -> tuple[dict, bool]:
+async def common_request(uri: str, params: dict, headers: dict, need_sign: bool = True, post: bool = True) -> tuple[dict, bool]:
     """
     请求 xhs
     :param uri: 请求路径
@@ -45,7 +45,7 @@ def common_request(uri: str, params: dict, headers: dict, need_sign: bool = True
 
         logger.info(f'url: {url}, request {url}, params={params}, headers={headers}')
         body = json.dumps(params, separators=(',', ':'), ensure_ascii=False)
-        response = requests.post(url, data=body, headers=headers)
+        response = await requests.post(url, data=body, headers=headers)
     else:
         if params.get('image_formats', None):
             params['image_formats'] = ','.join(params['image_formats'])
@@ -59,7 +59,7 @@ def common_request(uri: str, params: dict, headers: dict, need_sign: bool = True
             headers.update(sign_header)
 
         logger.info(f'url: {url}, request {url}, params={params}, headers={headers}')
-        response = requests.get(url, headers=headers)
+        response = await requests.get(url, headers=headers)
 
     logger.info(
         f'url: {url}, params: {params}, response, code: {response.status_code}, body: {response.text}')

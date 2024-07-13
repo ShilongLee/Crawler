@@ -1,4 +1,3 @@
-from flask import request
 from utils.error_code import ErrorCode
 from utils.reply import reply
 from ..models import accounts
@@ -6,25 +5,21 @@ from lib.logger import logger
 from ..logic import request_replys
 import random
 
-def replys():
+async def replys(id: str, comment_id: str, offset: int = 0, limit: int = 10):
     """
     获取笔记评论回复
     """
-    id = request.args.get('id', '')
-    comment_id = request.args.get('comment_id', '')
-    offset = int(request.args.get('offset', 0))
-    limit = int(request.args.get('limit', 10))
-    _accounts = accounts.load()
+    _accounts = await accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
         if account.get('expired', 0) == 1:
             continue
-        res, succ = request_replys(id, comment_id, account.get('cookie', ''), offset, limit)
-        if not succ:
-            accounts.expire(account.get('id', ''))
+        account_id = account.get('id', '')
+        res, succ = await request_replys(id, comment_id, account.get('cookie', ''), offset, limit)
         if res == {} or not succ:
+            logger.error(f'get reply failed, account: {account_id}, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}')
             continue
-        logger.info(f'get reply success, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}, res: {res}')
+        logger.info(f'get reply success, id: {id}, account: {account_id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)
     logger.warning(f'get reply failed, id: {id}, comment_id: {comment_id}, offset: {offset}, limit: {limit}')
-    return reply(ErrorCode.INTERNAL_ERROR, '内部错误请重试')
+    return reply(ErrorCode.NO_ACCOUNT, '请先添加账号')

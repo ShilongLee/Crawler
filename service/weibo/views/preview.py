@@ -1,29 +1,30 @@
-from flask import request, Response
+from fastapi import Request
+from fastapi.responses import StreamingResponse
 from utils.error_code import ErrorCode
 from utils.reply import reply
-import requests
+import httpx
 
-# route
-def preview():
+async def preview(request: Request):
     """
     预览视频
     """
-    url = request.args.get('url', '')
+    url = request.query_params.get('url', '')
     # 重新拼接url
-    for key, value in request.args.items(multi=True):
+    for key, value in dict(request.query_params).items():
         if key != 'url':
             url += f'&{key}={value}'
     # 发送请求
     headers = {'referer': 'https://weibo.com/'}
-    response = requests.get(url, headers=headers, stream=True)
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers)
     if url == '':
         return reply(code=ErrorCode.PARAMETER_ERROR, msg='url不能为空')
     
     content_type = response.headers.get('content-type', '')
-    
-    def generate():
-        for chunk in response.iter_content(chunk_size=1024):
+
+    async def generate():
+        async for chunk in response.aiter_bytes():
             if chunk:
                 yield chunk
 
-    return Response(generate(), content_type=content_type)
+    return StreamingResponse(generate(), media_type=content_type)

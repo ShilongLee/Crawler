@@ -1,6 +1,6 @@
 from .common import common_request, load_graphql_queries, GraphqlQuery
 
-def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
+async def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit: int = 20) -> tuple[dict, bool]:
     """
     请求快手获取评论回复信息
     """
@@ -19,9 +19,9 @@ def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0, limit
             "query": load_graphql_queries(GraphqlQuery.REPLYS)
 
         }
-        resp, succ = common_request(data, headers)
+        resp, succ = await common_request(data, headers)
         if not succ:
-            return resp, succ
+            return {}, succ
         comments.extend(resp.get('data', {}).get('visionSubCommentList', {}).get('subComments', []))
         pcursor = resp.get('data', {}).get('visionSubCommentList', {}).get('pcursor', '')
 

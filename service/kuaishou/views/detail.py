@@ -1,4 +1,3 @@
-from flask import request
 from utils.error_code import ErrorCode
 from utils.reply import reply
 from ..models import accounts
@@ -7,23 +6,21 @@ from ..logic import request_detail
 import random
 
 # route
-def detail():
+async def detail(id: str):
     """
     获取视频信息
     """
-    id = request.args.get('id', '')
-
-    _accounts = accounts.load()
+    _accounts = await accounts.load()
     random.shuffle(_accounts)
     for account in _accounts:
         if account.get('expired', 0) == 1:
             continue
-        res, succ = request_detail(id, account.get('cookie', ''))
-        if not succ:
-            accounts.expire(account.get('id', ''))
+        account_id = account.get('id', '')
+        res, succ = await request_detail(id, account.get('cookie', ''))
         if res == {} or not succ:
+            logger.error(f'get video detail failed, account: {account_id}, id: {id}, res: {res}')
             continue
-        logger.info(f'get video detail success, id: {id}, res: {res}')
+        logger.info(f'get video detail success, account: {account_id}, id: {id}, res: {res}')
         return reply(ErrorCode.OK, '成功' , res)
-    logger.warning(f'get video detail failed, don\'t have enough effective account. id: {id}')
-    return reply(ErrorCode.INTERNAL_ERROR, '内部错误请重试')
+    logger.warning(f'get video detail failed. id: {id}')
+    return reply(ErrorCode.NO_ACCOUNT, '请先添加账号')
