@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN apk add --update nodejs npm \
-    && pip install --no-cache-dir -r requirements.txt \
+    && pip3 install --no-cache-dir -r requirements.txt \
     && rm -rf /var/cache/apk/*
 
 COPY . .
