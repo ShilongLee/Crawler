@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN apk add --update nodejs npm \
+RUN apk add --update nodejs npm cmake\
     && pip3 install --no-cache-dir -r requirements.txt \
     && rm -rf /var/cache/apk/*
 
