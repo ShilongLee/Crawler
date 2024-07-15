@@ -22,5 +22,5 @@ ENV FILE=config/docker-config.yaml
 
 EXPOSE 8080
 
-CMD uvicorn --host 0.0.0.0 --port $(port) main:app
+CMD uvicorn --host 0.0.0.0 --port 8080 main:app
 
