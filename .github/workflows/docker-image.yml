@@ -55,9 +55,9 @@ jobs:
     - name: Tag and Push Docker image to Ali Container Registry
       run: |
         DATE_TAG=$(date +%Y%m%d)
-        IMAGE_NAME=registry.cn-hangzhou.aliyuncs.com/${{ github.repository_owner }}/crawler:latest
+        IMAGE_NAME=registry.cn-hangzhou.aliyuncs.com/shilongli0101/crawler:latest
         IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
-        IMAGE_NAME_DATE=registry.cn-hangzhou.aliyuncs.com/${{ github.repository_owner }}/crawler:$DATE_TAG
+        IMAGE_NAME_DATE=registry.cn-hangzhou.aliyuncs.com/shilongli0101/crawler:$DATE_TAG
         IMAGE_NAME_DATE=$(echo $IMAGE_NAME_DATE | tr '[A-Z]' '[a-z]')
         docker tag shilongli0101/crawler:latest $IMAGE_NAME
         docker tag shilongli0101/crawler:latest $IMAGE_NAME_DATE
