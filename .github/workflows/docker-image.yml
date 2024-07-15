@@ -50,7 +50,7 @@ jobs:
         docker push $IMAGE_NAME_DATE
 
     - name: Log in to Ali Container Registry
-      run: echo "${{ secrets.ALI_DOCKER_PASSWORD }}" | docker login registry.cn-hangzhou.aliyuncs.com -u ${{ secrets.ALI_DOCKER_USERNAME }} --password-stdin
+      run: echo "${{ secrets.ALI_DOCKER_PASSWORD }}" | docker login registry.cn-hangzhou.aliyuncs.com --username=${{ secrets.ALI_DOCKER_USERNAME }} --password-stdin
 
     - name: Tag and Push Docker image to Ali Container Registry
       run: |
