@@ -66,7 +66,13 @@
 1. 一键启动
 
     ```bash
-    sudo docker run -d --name crawler -p 8080:8080 shilongli0101/crawler
+    sudo docker run -d --name crawler -p 8080:8080 shilongli0101/crawler:latest
+    ```
+
+    或
+
+    ```bash
+    sudo docker run -d --name crawler -p 8080:8080 registry.cn-hangzhou.aliyuncs.com/shilongli0101/crawler:latest   # 国内镜像源
     ```
 
 2. 查看日志
