@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     cmake \
     pkg-config \
     libffi-dev \
+    nodejs \
+    npm \
     && pip3 install --no-cache-dir -r requirements.txt \
     && apt-get clean \
     && rm -rf /var/cache/apk/* \
