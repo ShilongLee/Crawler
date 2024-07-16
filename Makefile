@@ -9,7 +9,7 @@ install:
 clean:
 	rm -rf .venv
 
-port ?= 10002
+port ?= 8080
 run: venv install
 	. .venv/bin/activate; .venv/bin/uvicorn --host 0.0.0.0 --port $(port) main:app
 
