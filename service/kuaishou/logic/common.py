@@ -65,7 +65,7 @@ async def common_request(data: dict, headers: dict) -> tuple[dict, bool]:
 
     logger.info(
         f'url: {url}, request {url}, body={data}, headers={headers}')
-    response = await requests.post(url, headers, data)
+    response = await requests.post(url, headers, json=data)
     logger.info(
         f'url: {url}, body: {data}, response, code: {response.status_code}, body: {response.text}')
 
