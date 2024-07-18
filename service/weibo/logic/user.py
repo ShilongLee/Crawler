@@ -7,7 +7,7 @@ async def request_user(id: str, cookie: str, offset: int = 0, limit: int = 5) ->
     """
     ret = {}
     page_size = 5
-    start_page = int((offset - 1) / page_size) + 1
+    start_page = int( offset / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
     weibos = []
     total = 0

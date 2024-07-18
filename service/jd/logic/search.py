@@ -12,7 +12,7 @@ async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int 
     """
     results = []
     page_size = 30
-    start_page = int((offset - 1) / page_size ) + 1
+    start_page = int( offset / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
     keyword = quote(keyword)
     total = 0
@@ -26,7 +26,7 @@ async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int 
             total = _total
         results.extend(data)
     ret = {"results": results[(offset % page_size):(offset % page_size + limit)], "total": total}
-    return ret, True
+    return ret
 
 async def search(keyword: str, page: int, cookie: str) -> tuple[list, int]:
     query = f'?keyword={keyword}&page={page}'

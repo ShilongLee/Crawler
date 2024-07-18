@@ -11,7 +11,7 @@ async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int 
     """
     results = []
     page_size = 48
-    start_page = int((offset - 1) / page_size ) + 1
+    start_page = int( offset / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
     total = 0
     

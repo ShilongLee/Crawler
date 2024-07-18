@@ -12,7 +12,7 @@ async def request_replys(id: str, comment_id: str, cookie: str, offset: int = 0,
     oid = data.get('aid', 0)
 
     page_size = 10
-    start_page = int((offset - 1) / page_size ) + 1
+    start_page = int( offset / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
     comments = []
     total = 0

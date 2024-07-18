@@ -7,7 +7,7 @@ async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int 
     请求小红书获取搜索信息
     """
     page_size = 20
-    start_page = int((offset - 1) / page_size) + 1
+    start_page = int( offset / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
     xhs_sign_obj = execjs.compile(open('lib/js/xhs.js').read())
     tasks = [request_page(page, keyword, cookie, page_size, xhs_sign_obj) for page in range(start_page, end_page + 1)]
