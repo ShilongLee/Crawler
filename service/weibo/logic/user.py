@@ -6,24 +6,13 @@ async def request_user(id: str, cookie: str, offset: int = 0, limit: int = 5) ->
     请求微博获取用户信息
     """
     ret = {}
-    page_size = 5
-    start_page = int( offset / page_size ) + 1
-    end_page = int((offset + limit - 1) / page_size) + 1
-    weibos = []
-    total = 0
 
     tasks = [reqeust_user_detail(id, cookie)]
-    for page in range(start_page, end_page + 1):
-        tasks.append(request_user_weibo(id, page, cookie))
-    results = await asyncio.gather(*tasks)
-    detail_result, weibo_result = results[0], results[1:]
+    detail_result = await asyncio.gather(*tasks)
 
     ret['user'] = detail_result
-
-    for data in weibo_result:
-        weibos.extend(data.get('list', []))
-        total = data.get('count') if data.get('count') else total
-    weibos = weibos[(offset % page_size):(offset % page_size + limit)]
+    
+    weibos, total = await request_user_weibo(id, cookie, offset, limit)
 
     ret["weibo"] = {
         "list": weibos,
@@ -41,10 +30,21 @@ async def reqeust_user_detail(id: str, cookie: str) -> dict:
     return resp.get('data', {}).get('user', {})
 
 # 获取用户微博
-async def request_user_weibo(id: str, page: int, cookie: str) -> dict:
+async def request_user_weibo(id: str, cookie: str, offset: int, limit: int) -> tuple[list, int]:
     headers = {"cookie": cookie}
-    params = {"uid": id, "page": page, "feature": 0}
-    resp, succ = await common_request('/ajax/statuses/mymblog', params, headers)
-    if not succ:
-        return {}
-    return resp.get('data', {})
+    weibos = []
+    since_id = None
+    page = 1
+    total = 0
+    end_length = offset + limit
+    while (not since_id or since_id != "") and len(weibos) < end_length:
+        params = {"uid": id, "page": page, "feature": 0}
+        resp, succ = await common_request('/ajax/statuses/mymblog', params, headers)
+        if not succ:
+            return [], 0
+        weibos.extend(resp.get('data', {}).get('list', []))
+        total = resp.get('data', {}).get('total', 0)
+        page += 1
+        since_id = resp.get('data', {}).get('since_id', "")
+        
+    return weibos[offset:end_length], total
