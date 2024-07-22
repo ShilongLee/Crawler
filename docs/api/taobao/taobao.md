@@ -93,6 +93,54 @@
 | ut | true | int | 更新时间戳 |
 | expired | true | int | 0: 有效 1: 过期 (请求失败时自动设为过期) |
 
+### 获取商品详情
+
+- **URL**
+
+  `/taobao/detail`
+
+- **Method**
+
+  `GET`
+
+- **URL Params**
+
+| 参数 | 必选 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | true | string | 商品id |
+
+- **Success Response**
+
+| 参数 | 必选 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| code | true | int | 0: 成功 1: 参数错误 2: 服务器错误 |
+| data | true | struct | 数据 |
+| msg | true | string | 请求说明(成功、参数错误、服务器错误) |
+
+### 获取商品评论
+
+- **URL**
+
+  `/taobao/comments`
+
+- **Method**
+
+  `GET`
+
+- **URL Params**
+
+| 参数 | 必选 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | true | string | 商品id |
+
+- **Success Response**
+
+| 参数 | 必选 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| code | true | int | 0: 成功 1: 参数错误 2: 服务器错误 |
+| data | true | struct | 数据 |
+| msg | true | string | 请求说明(成功、参数错误、服务器错误) |
+
 ### 关键词搜索商品
 
 - **URL**
@@ -118,4 +166,3 @@
 | code | true | int | 0: 成功 1: 参数错误 2: 服务器错误 |
 | data | true | struct | 数据 |
 | msg | true | string | 请求说明(成功、参数错误、服务器错误) |
-

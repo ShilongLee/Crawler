@@ -4,7 +4,6 @@ from lib import requests
 import urllib.parse
 import re
 import random
-import json
 
 HOST = 'https://www.douyin.com'
 
