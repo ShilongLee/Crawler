@@ -1,0 +1,9 @@
+HOST = 'http://127.0.0.1:8080'
+
+DY_COOKIE = ''
+BILIBILI_COOKIE = ""
+JD_COOKIE = ''
+KS_COOKIE = ''
+TB_COOKIE = ''
+WEIBO_COOKIE = ''
+XHS_COOKIE = ''
