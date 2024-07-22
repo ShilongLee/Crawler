@@ -24,7 +24,7 @@ async def request_comments(id: str, cookie: str, offset: int, limit: int) -> tup
             return resp, succ
         comments.extend(resp.get('data', {}).get('visionCommentList', {}).get('rootComments', []))
         pcursor = resp.get('data', {}).get('visionCommentList', {}).get('pcursor', '')
-        total = resp.get('data', {}).get('total', 0)
+        total = resp.get('data', {}).get('visionCommentList', {}).get('commentCount', 0)
 
     ret = {"total": total, "comments": comments[offset:end_length]}
     return ret, succ
