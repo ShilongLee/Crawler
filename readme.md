@@ -63,7 +63,7 @@
 
 5. 本地测试
 
-  在`test/cookie.py`中添加自己的cookie，然后运行`make test module=douyin`进行单元测试，不加module参数则运行所有测试用例。
+   在`test/cookie.py`中添加自己的cookie，然后运行`make test module=douyin`进行单元测试，不加module参数则运行所有测试用例。
 
 ### 使用docker
 
