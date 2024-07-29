@@ -37,6 +37,8 @@
 
 ## 快速开始
 
+> 如果使用Windows操作系统，请跳转到[Windows](https://github.com/ShilongLee/Crawler/wiki/Windows)查看启动方式.
+
 ### 使用Makefile
 
 1. 准备好[python](https://www.python.org/)
