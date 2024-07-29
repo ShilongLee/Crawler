@@ -39,7 +39,7 @@ async def common_request(uri: str, params: dict, headers: dict, need_sign: bool 
 
     if post:
         if need_sign:
-            xhs_sign_obj = execjs.compile(open('lib/js/xhs.js').read())
+            xhs_sign_obj = execjs.compile(open('lib/js/xhs.js', encoding='utf-8').read())
             sign_header = xhs_sign_obj.call('sign', uri, params, headers.get('cookie', ''))
             headers.update(sign_header)
 
@@ -54,7 +54,7 @@ async def common_request(uri: str, params: dict, headers: dict, need_sign: bool 
         url = f'{url}?{params_str}'
 
         if need_sign:
-            xhs_sign_obj = execjs.compile(open('lib/js/xhs.js').read())
+            xhs_sign_obj = execjs.compile(open('lib/js/xhs.js', encoding='utf-8').read())
             sign_header = xhs_sign_obj.call('sign', uri, None, headers.get('cookie', ''))
             headers.update(sign_header)
 

@@ -57,7 +57,7 @@ COMMON_HEADERS ={
     "dnt": "1",
 }
 
-DOUYIN_SIGN = execjs.compile(open('lib/js/douyin.js').read())
+DOUYIN_SIGN = execjs.compile(open('lib/js/douyin.js', encoding='utf-8').read())
 
 async def get_webid(headers: dict):
     url = 'https://www.douyin.com/?recommend=1'

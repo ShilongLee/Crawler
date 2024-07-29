@@ -9,7 +9,7 @@ async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int 
     page_size = 20
     start_page = int( offset / page_size ) + 1
     end_page = int((offset + limit - 1) / page_size) + 1
-    xhs_sign_obj = execjs.compile(open('lib/js/xhs.js').read())
+    xhs_sign_obj = execjs.compile(open('lib/js/xhs.js', encoding='utf-8').read())
     tasks = [request_page(page, keyword, cookie, page_size, xhs_sign_obj) for page in range(start_page, end_page + 1)]
     pages = await asyncio.gather(*tasks)
     results = []
