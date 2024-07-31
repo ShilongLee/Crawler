@@ -5,10 +5,10 @@ from lib.logger import logger
 from ..logic import request_search
 import random
 
-async def search(keyword: str, sort: str, offset: int = 0, limit: int = 20):
+async def search(keyword: str, sort: str = "general", offset: int = 0, limit: int = 20):
     """
     获取笔记搜索
-    "sort": "time_descending",  # 排序，general：默认, popularity_descending：最热, time_descending：最新
+    "sort": general：默认, popularity_descending：最热, time_descending：最新
     """
     _accounts = await accounts.load()
     random.shuffle(_accounts)

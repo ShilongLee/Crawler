@@ -191,6 +191,7 @@
 | keyword | true | string | 搜索词 |
 | offset | false | int | 搜索翻页偏移量, 默认0 |
 | limit | false | int | 结果数量, 默认10 |
+| sort | false | string | 排序方式，默认为`general`综合。 |
 
 - **Success Response**
 
