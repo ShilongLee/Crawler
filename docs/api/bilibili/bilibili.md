@@ -210,7 +210,7 @@
 
 script/bilibili/download.py
 
-- **参数**
+- **使用方法**
 
 ```bash
 python3 script/bilibili/download.py --id=<video_id> --dir=<dir> --retain=<retain> --hostport=<hostport>
