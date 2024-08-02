@@ -29,6 +29,9 @@ async def request_detail(id: str, cookie: str) -> tuple[dict, bool]:
     headers = {"cookie": cookie}
     resp, succ = await common_request('/api/sns/web/v1/feed', params, headers)
     if not succ:
-        return {}, succ
+        if resp.get('code') == -510000 or resp.get('code') == -510001:
+            return resp,succ
+        else:
+            return {}, succ
     ret = resp.get('data', {})
     return ret, succ
