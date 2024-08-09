@@ -17,7 +17,7 @@ async def detail(id: str):
             continue
         account_id = account.get('id', '')
         res, succ = await request_detail(id, account.get('cookie', ''))
-        if res == {} or not succ:
+        if res == {}:
             logger.error(f'get note detail failed, account: {account_id}, id: {id}')
             continue
         logger.info(f'get note detail success, account: {account_id}, id: {id}, res: {res}')
