@@ -132,6 +132,8 @@
 | 参数 | 必选 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | true | string | 商品id |
+| offset | false | int | 评论翻页偏移量, 默认0 |
+| limit | false | int | 评论数量, 默认20 |
 
 - **Success Response**
 

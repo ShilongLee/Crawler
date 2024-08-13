@@ -18,8 +18,8 @@ async def request_search(keyword: str, cookie: str, offset: int = 0, limit: int 
     total = 0
     
     tasks = [search(keyword, cookie, page) for page in range(start_page, end_page + 1)]
-    results = await asyncio.gather(*tasks)
-    for data in results:
+    task_results = await asyncio.gather(*tasks)
+    for data in task_results:
         results.extend(data.get('itemsArray', []))
         total = data.get('mainInfo', {}).get('totalResults', 0)
 
