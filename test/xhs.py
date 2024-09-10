@@ -68,7 +68,7 @@ class TestModule(unittest.TestCase):
         response = requests.get(f'{HOST}/xhs/detail', params=param)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['code'], 0)
-        self.assertEqual(response.json()['data']['items'][0]['id'], param['id'])
+        self.assertEqual(response.json()['data']['note']['noteId'], param['id'])
 
     # 获取评论接口
     def test_comments(self):
