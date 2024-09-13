@@ -1,5 +1,8 @@
 .PHONY: venv, install, clean, help
 
+all: venv install
+	@echo "Build success"
+
 venv:
 	python3 -m venv .venv
 
