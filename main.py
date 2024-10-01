@@ -9,7 +9,7 @@ import os
 CONFIG_PATH = ''
 
 app = FastAPI()
-services = ['xhs', 'weibo', 'taobao', 'kuaishou', 'jd', 'douyin', 'bilibili']
+services = ['xhs', 'weibo', 'taobao', 'kuaishou', 'jd', 'douyin', 'bilibili', 'proxies']
 
 def register_router():
     for service in services:
