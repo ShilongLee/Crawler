@@ -34,6 +34,7 @@
 - 小红书[无水印视频](docs/api/xhs/xhs.md#获取笔记详情)
 - 哔哩哔哩视频[一键下载](docs/api/bilibili/bilibili.md#bilibili视频下载)
 - 微博媒体资源[预览接口](docs/api/weibo/weibo.md#微博媒体预览)
+- 支持[IP代理池](https://github.com/ShilongLee/Crawler/wiki/%E4%BB%A3%E7%90%86)(轮换算法)。
 
 ## 快速开始
 
