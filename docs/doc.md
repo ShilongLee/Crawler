@@ -99,3 +99,15 @@
 - 微博用户信息和作品获取
 
 微博：[API 文档](api/weibo/weibo.md)
+
+## 代理
+
+目前支持以下接口：
+
+- 添加代理url
+- 移除代理url
+- 启用代理
+- 关闭代理
+- 获取代理url列表
+
+代理：[API 文档](api/proxies/proxies.md)

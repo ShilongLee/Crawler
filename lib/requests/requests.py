@@ -28,7 +28,7 @@ def retry_request(func, max_retries=3):
 
 async def get_proxy():
     global proxies
-    proxies = await proxyModel.load()
+    proxies = await proxyModel.load(enable = 1)
     if(len(proxies) == 0):
         return None
     proxy = proxies[int(int(time.time()) / 300) % len(proxies)]

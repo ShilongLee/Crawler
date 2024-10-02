@@ -132,7 +132,7 @@ class Proxies(SqliteStore):
         async with self._get_connection() as conn:
             try:
                 sql = f'DELETE FROM {self.table_name} WHERE id = ?'
-                await conn.execute(sql, (str(id)))
+                await conn.execute(sql, (id,))
                 await conn.commit()
                 return True
             except Exception as e:
@@ -140,21 +140,28 @@ class Proxies(SqliteStore):
                 await conn.rollback()
                 return False 
 
-    async def load(self, offset: int = 0, limit: int = 0) -> list:
+    async def load(self, enable: int = -1, offset: int = 0, limit: int = 0) -> list:
         async with self._get_connection() as conn:
             try:
-                if limit == 0:
-                    sql = f'SELECT * FROM {self.table_name}'
-                    cursor = await conn.execute(sql)
-                else:
-                    sql = f'SELECT * FROM {self.table_name} LIMIT ? OFFSET ?'
-                    cursor = await conn.execute(sql, (limit, offset))
+                base_sql = f'SELECT * FROM {self.table_name}'
+                params = []
+
+                if enable != -1:
+                    base_sql += ' WHERE enable = ?'
+                    params.append(enable)
+
+                if limit > 0:
+                    base_sql += ' LIMIT ? OFFSET ?'
+                    params.extend([limit, offset])
+
+                cursor = await conn.execute(base_sql, params)
                 results = await cursor.fetchall()
                 return [dict(row) for row in results]
             except Exception as e:
                 logger.error(f'failed to load proxies, error: {e}')
                 await conn.rollback()
                 return []
+
 
     async def enable(self, id: int) -> bool:
         ut = int(time.time())
