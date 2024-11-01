@@ -7,12 +7,12 @@ import json
 
 
 
-async def request_detail(id: str, cookie: str) -> tuple[dict, bool]:
+async def request_detail(id: str, xsec_token: str, cookie: str) -> tuple[dict, bool]:
     """
     请求小红书获取视频信息
     """
     # 获取xsec_token
-    url = f'https://www.xiaohongshu.com/explore/{id}'
+    url = f'https://www.xiaohongshu.com/explore/{id}?xsec_source=pc_search&xsec_token={xsec_token}'
     headers = {"cookie": cookie}
     headers.update(COMMON_HEADERS)
     resp = await requests.get(url, headers=headers)
