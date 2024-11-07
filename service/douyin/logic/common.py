@@ -4,6 +4,7 @@ from lib import requests
 import urllib.parse
 import re
 import random
+from urllib.parse import urlencode
 
 HOST = 'https://www.douyin.com'
 
@@ -132,19 +133,21 @@ async def common_request(uri: str, params: dict, headers: dict) -> tuple[dict, b
     a_bogus = DOUYIN_SIGN.call(call_name, query, headers["User-Agent"])
     params["a_bogus"] = a_bogus
 
+    full_url = f"{url}?{urlencode(params)}"
+
     logger.info(
-        f'url: {url}, request {url}, params={params}, headers={headers}')
-    response = await requests.get(url, params=params, headers=headers)
+        f'url: {full_url}, params: {params}, headers={headers}')
+    response = await requests.get(full_url, params=None, headers=headers)
     logger.info(
-        f'url: {url}, params: {params}, response, code: {response.status_code}, body: {response.text}')
+        f'url: {full_url}, params: {params}, response, code: {response.status_code}, body: {response.text}')
 
     if response.status_code != 200 or response.text == '':
         logger.error(
-            f'url: {url}, params: {params}, request error, code: {response.status_code}, body: {response.text}')
+            f'url: {full_url}, params: {params}, request error, code: {response.status_code}, body: {response.text}')
         return {}, False
     if response.json().get('status_code', 0) != 0:
         logger.error(
-            f'url: {url}, params: {params}, request error, code: {response.status_code}, body: {response.text}')
+            f'url: {full_url}, params: {params}, request error, code: {response.status_code}, body: {response.text}')
         return response.json(), False
 
     return response.json(), True
