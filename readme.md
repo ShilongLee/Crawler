@@ -125,3 +125,7 @@ API文档：[API 文档](docs/doc.md)
 ---
 
 **注意：** 本项目不承担用户因违反这些使用条件而产生的任何直接或间接的损失或责任。
+
+## 支持
+
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
