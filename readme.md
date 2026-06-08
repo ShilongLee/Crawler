@@ -16,6 +16,16 @@
 
 如有任何问题，可联系我的邮箱 <lishilong0101@gmail.com> 。
 
+## 支持
+
+[![IPWO爬虫住宅代理](docs/assets/ipwo-banner.png)](https://www.ipwo.net/?ref=githublishilong)
+
+IPWO爬虫代理资源为采集、跨境与测试项目提供支持(免费试用，流量不过期，爬虫使用保护账号不封号)学习者务必遵循法律！
+
+这是一个开箱即用的 IP 代理池，真实住宅 IP源于195 + 国家 / 地区精准定位，支持 HTTP/HTTPS/SOCKS5 协议，抓取、验证、切换可用代理，0元试用，轻松绕过地域和频率限制优惠折扣码"long"。
+
+官网链接：[https://www.ipwo.net](https://www.ipwo.net/?ref=githublishilong)
+
 ## 功能
 
 | 平台 | 关键词搜索 | 帖子/视频详情 | 一级评论 | 二级评论 | 视频/图片下载 | 用户信息/作品 |
@@ -125,7 +135,3 @@ API文档：[API 文档](docs/doc.md)
 ---
 
 **注意：** 本项目不承担用户因违反这些使用条件而产生的任何直接或间接的损失或责任。
-
-## 支持
-
-[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
