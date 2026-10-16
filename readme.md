@@ -16,6 +16,24 @@
 
 如有任何问题，可联系我的邮箱 <lishilong0101@gmail.com> 。
 
+## 支持
+
+Sponsored by RapidProxy
+
+[![RapidProxy 住宅代理](docs/assets/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=crawler)
+
+🚀 [RapidProxy](https://www.rapidproxy.io/?ref=crawler) — 专业住宅代理服务商
+
+RapidProxy 提供高速、稳定的全球住宅代理和 ISP 代理，专为网页爬虫、数据采集及自动化任务打造。支持智能 IP 轮换、高并发和粘性会话，帮助开发者减少 IP 封禁，提高采集效率。
+
+- 🌍 90M+ 全球住宅 IP
+- ⚡ 智能轮换 · 高并发 · 稳定连接
+- 💰 低至 $0.55/GB，流量不过期
+
+🎁 免费测试 [RapidProxy](https://www.rapidproxy.io/?ref=crawler)，使用优惠码 `RAPID10` 享 9 折优惠！
+
+官网链接：[https://www.rapidproxy.io](https://www.rapidproxy.io/?ref=crawler)
+
 ## 功能
 
 | 平台 | 关键词搜索 | 帖子/视频详情 | 一级评论 | 二级评论 | 视频/图片下载 | 用户信息/作品 |
