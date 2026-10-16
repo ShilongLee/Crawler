@@ -22,18 +22,6 @@ Sponsored by RapidProxy
 
 [![RapidProxy 住宅代理](docs/assets/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=crawler)
 
-🚀 [RapidProxy](https://www.rapidproxy.io/?ref=crawler) — 专业住宅代理服务商
-
-RapidProxy 提供高速、稳定的全球住宅代理和 ISP 代理，专为网页爬虫、数据采集及自动化任务打造。支持智能 IP 轮换、高并发和粘性会话，帮助开发者减少 IP 封禁，提高采集效率。
-
-- 🌍 90M+ 全球住宅 IP
-- ⚡ 智能轮换 · 高并发 · 稳定连接
-- 💰 低至 $0.55/GB，流量不过期
-
-🎁 免费测试 [RapidProxy](https://www.rapidproxy.io/?ref=crawler)，使用优惠码 `RAPID10` 享 9 折优惠！
-
-官网链接：[https://www.rapidproxy.io](https://www.rapidproxy.io/?ref=crawler)
-
 ## 功能
 
 | 平台 | 关键词搜索 | 帖子/视频详情 | 一级评论 | 二级评论 | 视频/图片下载 | 用户信息/作品 |
@@ -52,7 +40,7 @@ RapidProxy 提供高速、稳定的全球住宅代理和 ISP 代理，专为网�
 - 小红书[无水印视频](docs/api/xhs/xhs.md#获取笔记详情)
 - 哔哩哔哩视频[一键下载](docs/api/bilibili/bilibili.md#bilibili视频下载)
 - 微博媒体资源[预览接口](docs/api/weibo/weibo.md#微博媒体预览)
-- 支持[IP代理池](https://github.com/ShilongLee/Crawler/wiki/%E4%BB%A3%E7%90%86)(轮换算法)。
+- 支持[IP代理池](https://github.com/ShilongLee/Crawler/wiki/%E4%BB%A3%E7%90%86)(轮换算法)。没有代理可[免费测试](https://www.rapidproxy.io/?ref=crawler)，优惠码 `RAPID10`。
 
 ## 快速开始
 
