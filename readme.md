@@ -16,14 +16,6 @@
 
 如有任何问题，可联系我的邮箱 <lishilong0101@gmail.com> 。
 
-## 支持
-
-Sponsored by RapidProxy
-
-[![RapidProxy 住宅代理](docs/assets/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=crawler)
-
-请求失败？[注册一个 IP 代理](https://www.rapidproxy.io/?ref=crawler)试试，可以免费试用。
-
 ## 功能
 
 | 平台 | 关键词搜索 | 帖子/视频详情 | 一级评论 | 二级评论 | 视频/图片下载 | 用户信息/作品 |
@@ -42,7 +34,7 @@ Sponsored by RapidProxy
 - 小红书[无水印视频](docs/api/xhs/xhs.md#获取笔记详情)
 - 哔哩哔哩视频[一键下载](docs/api/bilibili/bilibili.md#bilibili视频下载)
 - 微博媒体资源[预览接口](docs/api/weibo/weibo.md#微博媒体预览)
-- 支持[IP代理池](https://github.com/ShilongLee/Crawler/wiki/%E4%BB%A3%E7%90%86)(轮换算法)。请求失败？[注册一个 IP 代理](https://www.rapidproxy.io/?ref=crawler)试试，可以免费试用。
+- 支持[IP代理池](https://github.com/ShilongLee/Crawler/wiki/%E4%BB%A3%E7%90%86)(轮换算法)。请求失败多半是 IP 被风控，可以加进代理池试试。还没有代理，[注册一个](https://www.rapidproxy.io/?ref=crawler)免费试用。
 
 ## 快速开始
 
@@ -100,7 +92,11 @@ Sponsored by RapidProxy
 
 然后在你的代码中调用API，获取公开的信息。
 
-请求失败？[注册一个 IP 代理](https://www.rapidproxy.io/?ref=crawler)试试，可以免费试用。
+## 请求失败
+
+请求失败，多半是 IP 被风控。可以加一个 IP 代理池试试。还没有代理的话，[注册一个](https://www.rapidproxy.io/?ref=crawler)免费试用。
+
+[![RapidProxy 住宅代理](docs/assets/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=crawler)
 
 ## 文档
 
