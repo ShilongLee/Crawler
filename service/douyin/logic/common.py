@@ -41,13 +41,13 @@ COMMON_PARAMS = {
 }
 
 COMMON_HEADERS ={
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
     "sec-fetch-site": "same-origin",
     "sec-fetch-mode": "cors",
     "sec-fetch-dest": "empty",
     "sec-ch-ua-platform": "Windows",
     "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+    "sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="155", "Google Chrome";v="155"',
     "referer": "https://www.douyin.com/?recommend=1",
     "priority": "u=1, i",
     "pragma": "no-cache",
